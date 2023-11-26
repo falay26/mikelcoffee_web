@@ -7,6 +7,7 @@ import PersistLogin from "./components/olds/PersistLogin";
 import RequireAuth from "./components/olds/RequireAuth";
 import Missing from "./components/olds/Missing";
 import Unauthorized from "./components/olds/Unauthorized";
+import Share from "./components/olds/Share";
 //Screens
 import Home from "./screens/HomeScreen";
 import Admin from "./screens/AdminScreen";
@@ -31,6 +32,10 @@ function App() {
     {
       path: "unauthorized",
       element: <Unauthorized />,
+    },
+    {
+      path: "share",
+      element: <Share />,
     },
     {
       path: "privacy_policy",
@@ -82,6 +87,10 @@ function App() {
           ],
         },
       ],
+    },
+    {
+      path: "/*",
+      element: <Missing />,
     },
   ]);
 
