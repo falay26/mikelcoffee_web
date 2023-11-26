@@ -19,9 +19,6 @@ import Notifications from "./screens/NotificationsScreen";
 import Supports from "./screens/SupportsScreen";
 import Franchises from "./screens/FranchisesScreen";
 //TODO: Transections and Orders
-//Files
-import appleLinking from "./files/apple-app-site-association";
-import googleLinking from "./files/assetslink.json";
 //Constants
 import Roles from "./constants/Roles";
 
