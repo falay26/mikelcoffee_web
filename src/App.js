@@ -83,10 +83,6 @@ function App() {
         },
       ],
     },
-    {
-      path: "/*",
-      element: <Missing />,
-    },
   ]);
 
   return (
