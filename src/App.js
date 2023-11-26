@@ -1,24 +1,101 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+//Components
+import PersistLogin from "./components/olds/PersistLogin";
+import RequireAuth from "./components/olds/RequireAuth";
+import Missing from "./components/olds/Missing";
+import Unauthorized from "./components/olds/Unauthorized";
+//Screens
+import Home from "./screens/HomeScreen";
+import Admin from "./screens/AdminScreen";
+import Panel from "./screens/PanelScreen";
+import Branches from "./screens/BranchesScreen";
+import Products from "./screens/ProductsScreen";
+import Stories from "./screens/StoriesScreen";
+import Campaigns from "./screens/CampaignsScreen";
+import Notifications from "./screens/NotificationsScreen";
+import Supports from "./screens/SupportsScreen";
+import Franchises from "./screens/FranchisesScreen";
+//TODO: Transections and Orders
+//Files
+import appleLinking from "./files/apple-app-site-association";
+import googleLinking from "./files/assetslink.json";
+//Constants
+import Roles from "./constants/Roles";
 
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      path: "unauthorized",
+      element: <Unauthorized />,
+    },
+    {
+      path: "privacy_policy",
+      element: null, //This is for privacy policy or other terms..
+    },
+    {
+      path: "admin",
+      element: <Admin />,
+    },
+    {
+      element: <PersistLogin />,
+      children: [
+        {
+          element: <RequireAuth allowedRoles={[Roles.Admin]} />,
+          children: [
+            {
+              path: "panel",
+              element: <Panel />,
+            },
+            {
+              path: "branches",
+              element: <Branches />,
+            },
+            {
+              path: "products",
+              element: <Products />,
+            },
+            {
+              path: "stories",
+              element: <Stories />,
+            },
+            {
+              path: "campaigns",
+              element: <Campaigns />,
+            },
+            {
+              path: "notifications",
+              element: <Notifications />,
+            },
+            {
+              path: "supports",
+              element: <Supports />,
+            },
+            {
+              path: "franchises",
+              element: <Franchises />,
+            },
+            //Other screen will be added here.
+          ],
+        },
+      ],
+    },
+    {
+      path: "/*",
+      element: <Missing />,
+    },
+  ]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <RouterProvider router={router} />
+    </LocalizationProvider>
   );
 }
 
