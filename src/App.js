@@ -8,6 +8,7 @@ import RequireAuth from "./components/olds/RequireAuth";
 import Missing from "./components/olds/Missing";
 import Unauthorized from "./components/olds/Unauthorized";
 import Share from "./components/olds/Share";
+import Campaign from "./components/olds/Campaign";
 //Screens
 import Home from "./screens/HomeScreen";
 import Admin from "./screens/AdminScreen";
@@ -36,6 +37,10 @@ function App() {
     {
       path: "share",
       element: <Share />,
+    },
+    {
+      path: "campaign",
+      element: <Campaign />,
     },
     {
       path: "privacy_policy",

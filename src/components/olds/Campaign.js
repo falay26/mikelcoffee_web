@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const Share = () => {
+const Campaign = () => {
   const navigate = useNavigate();
 
   const userAgent = window.navigator.userAgent,
@@ -13,6 +13,7 @@ const Share = () => {
 
   if (macosPlatforms.indexOf(platform) !== -1) {
     //TODO: Go to App store
+    window.location.href = "https://www.apple.com/app-store/";
   } else if (iosPlatforms.indexOf(platform) !== -1) {
     //TODO: Go to App store
     window.location.href = "https://www.apple.com/app-store/";
@@ -30,4 +31,4 @@ const Share = () => {
   return <section></section>;
 };
 
-export default Share;
+export default Campaign;
