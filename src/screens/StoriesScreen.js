@@ -15,6 +15,7 @@ const APIS = {
   update: "/update_story",
   delete: "/delete_story",
   options: "/get_all_campaigns",
+  options1: "/get_all_branches",
 };
 
 const StoriesScreen = () => {
@@ -22,6 +23,7 @@ const StoriesScreen = () => {
 
   const [data, setData] = useState([]);
   const [options, setOptions] = useState([]);
+  const [options1, setOptions1] = useState([]);
   const [editOpen, setEditOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -32,10 +34,12 @@ const StoriesScreen = () => {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [campaign, setCampaign] = useState("");
+  const [branch, setBranch] = useState("");
 
   useEffect(() => {
     fetchDatas();
     fetchOptions();
+    fetchOptions1();
   }, [editOpen]);
 
   const fetchDatas = async () => {
@@ -85,6 +89,28 @@ const StoriesScreen = () => {
     }
   };
 
+  const fetchOptions1 = async () => {
+    try {
+      let parameters = {};
+      const response = await axiosPrivate.post(
+        APIS.options1,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        setOptions1(response.data.data);
+      }
+    } catch (err) {
+      // TODO: Errorhandling..
+    }
+  };
+
   const handleAdd = async () => {
     setLoading(true);
     try {
@@ -93,8 +119,8 @@ const StoriesScreen = () => {
         title: title,
         subtitle: subtitle,
         campaign_id: campaign,
+        branch_id: branch,
       };
-      console.log(JSON.stringify(parameters));
       const response = await axiosPrivate.post(
         APIS.add,
         JSON.stringify(parameters),
@@ -125,6 +151,7 @@ const StoriesScreen = () => {
         title: title,
         subtitle: subtitle,
         campaign_id: campaign,
+        branch_id: branch,
       };
       const response = await axiosPrivate.post(
         APIS.update,
@@ -215,7 +242,17 @@ const StoriesScreen = () => {
       state: campaign,
       setState: setCampaign,
       options: options,
-      option_title: "title"
+      option_title: "title",
+    },
+    {
+      title: "Şube",
+      value: "branch_id",
+      not_visible: true,
+      type: "choiceinput",
+      state: branch,
+      setState: setBranch,
+      options: options1,
+      option_title: "name",
     },
     {
       title: "Düzenle/Sil",
