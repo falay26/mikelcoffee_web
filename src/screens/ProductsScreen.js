@@ -26,12 +26,24 @@ const ProductsScreen = () => {
   const [id, setId] = useState();
 
   const [category, setCategory] = useState("");
-  const [subCategory, setSubCategory] = useState("");
-  const [title, setTitle] = useState("");
+  const [subCategoryTR, setSubCategoryTR] = useState("");
+  const [subCategoryEN, setSubCategoryEN] = useState("");
+  const [subCategoryGR, setSubCategoryGR] = useState("");
+  const [subCategoryAR, setSubCategoryAR] = useState("");
+  const [titleTR, setTitleTR] = useState("");
+  const [titleEN, setTitleEN] = useState("");
+  const [titleGR, setTitleGR] = useState("");
+  const [titleAR, setTitleAR] = useState("");
   const [image, setImage] = useState("");
-  const [description, setDescription] = useState("");
+  const [descriptionTR, setDescriptionTR] = useState("");
+  const [descriptionEN, setDescriptionEN] = useState("");
+  const [descriptionGR, setDescriptionGR] = useState("");
+  const [descriptionAR, setDescriptionAR] = useState("");
   const [ingredients, setIngredients] = useState([]);
-  const [ingredientsText, setIngredientsText] = useState("");
+  const [ingredientsTextTR, setIngredientsTextTR] = useState("");
+  const [ingredientsTextEN, setIngredientsTextEN] = useState("");
+  const [ingredientsTextGR, setIngredientsTextGR] = useState("");
+  const [ingredientsTextAR, setIngredientsTextAR] = useState("");
   const [sizes, setSizes] = useState([]);
   const [online, setOnline] = useState(false);
   const [allergens, setAllergens] = useState([]);
@@ -73,12 +85,27 @@ const ProductsScreen = () => {
     try {
       let parameters = {
         category_id: category,
-        sub_category: subCategory,
-        title: title,
+        sub_category: {
+          tr: subCategoryTR,
+          en: subCategoryEN,
+          gr: subCategoryGR,
+          ar: subCategoryAR,
+        },
+        title: { tr: titleTR, en: titleEN, gr: titleGR, ar: titleAR },
         image: image,
-        description: description,
+        description: {
+          tr: descriptionTR,
+          en: descriptionEN,
+          gr: descriptionGR,
+          ar: descriptionAR,
+        },
         ingredients: ingredients,
-        ingredients_text: ingredientsText,
+        ingredients_text: {
+          tr: ingredientsTextTR,
+          en: ingredientsTextEN,
+          gr: ingredientsTextGR,
+          ar: ingredientsTextAR,
+        },
         sizes: sizes,
         online: online,
         allergens: allergens,
@@ -113,12 +140,27 @@ const ProductsScreen = () => {
       let parameters = {
         product_id: id,
         category_id: category,
-        sub_category: subCategory,
-        title: title,
+        sub_category: {
+          tr: subCategoryTR,
+          en: subCategoryEN,
+          gr: subCategoryGR,
+          ar: subCategoryAR,
+        },
+        title: { tr: titleTR, en: titleEN, gr: titleGR, ar: titleAR },
         image: image,
-        description: description,
+        description: {
+          tr: descriptionTR,
+          en: descriptionEN,
+          gr: descriptionGR,
+          ar: descriptionAR,
+        },
         ingredients: ingredients,
-        ingredients_text: ingredientsText,
+        ingredients_text: {
+          tr: ingredientsTextTR,
+          en: ingredientsTextEN,
+          gr: ingredientsTextGR,
+          ar: ingredientsTextAR,
+        },
         sizes: sizes,
         online: online,
         allergens: allergens,
@@ -178,12 +220,24 @@ const ProductsScreen = () => {
       setId(item._id);
     }
     setCategory(item === undefined ? "" : item.category_id);
-    setSubCategory(item === undefined ? "" : item.sub_category);
-    setTitle(item === undefined ? "" : item.title);
+    setSubCategoryTR(item === undefined ? "" : item.sub_category.tr);
+    setSubCategoryEN(item === undefined ? "" : item.sub_category.en);
+    setSubCategoryGR(item === undefined ? "" : item.sub_category.gr);
+    setSubCategoryAR(item === undefined ? "" : item.sub_category.ar);
+    setTitleTR(item === undefined ? "" : item.title.tr);
+    setTitleEN(item === undefined ? "" : item.title.en);
+    setTitleGR(item === undefined ? "" : item.title.gr);
+    setTitleAR(item === undefined ? "" : item.title.ar);
     setImage(item === undefined ? "" : item.image);
-    setDescription(item === undefined ? "" : item.description);
+    setDescriptionTR(item === undefined ? "" : item.description.tr);
+    setDescriptionEN(item === undefined ? "" : item.description.en);
+    setDescriptionGR(item === undefined ? "" : item.description.gr);
+    setDescriptionAR(item === undefined ? "" : item.description.ar);
     setIngredients(item === undefined ? [] : item.ingredients);
-    setIngredientsText(item === undefined ? "" : item.ingredients_text);
+    setIngredientsTextTR(item === undefined ? "" : item.ingredients_text.tr);
+    setIngredientsTextEN(item === undefined ? "" : item.ingredients_text.en);
+    setIngredientsTextGR(item === undefined ? "" : item.ingredients_text.gr);
+    setIngredientsTextAR(item === undefined ? "" : item.ingredients_text.ar);
     setSizes(item === undefined ? [] : item.sizes);
     setOnline(item === undefined ? false : item.online);
     setAllergens(item === undefined ? [] : item.allergens);
@@ -268,19 +322,67 @@ const ProductsScreen = () => {
       option_title: "title",
     },
     {
-      title: "Alt Kategori",
-      value: "sub_category",
+      title: "Alt Kategori (Türkçe)",
+      value: "sub_category.tr",
       not_visible: true,
       type: "textinput",
-      state: subCategory,
-      setState: setSubCategory,
+      state: subCategoryTR,
+      setState: setSubCategoryTR,
     },
     {
-      title: "İsim",
-      value: "title",
+      title: "Alt Kategori (İngilizce)",
+      value: "sub_category.en",
+      not_visible: true,
       type: "textinput",
-      state: title,
-      setState: setTitle,
+      state: subCategoryEN,
+      setState: setSubCategoryEN,
+    },
+    {
+      title: "Alt Kategori (Yunanca)",
+      value: "sub_category.gr",
+      not_visible: true,
+      type: "textinput",
+      state: subCategoryGR,
+      setState: setSubCategoryGR,
+    },
+    {
+      title: "Alt Kategori (Arapça)",
+      value: "sub_category.ar",
+      not_visible: true,
+      type: "textinput",
+      state: subCategoryAR,
+      setState: setSubCategoryAR,
+    },
+    {
+      title: "İsim (Türkçe)",
+      value: "title.tr",
+      type: "textinput",
+      state: titleTR,
+      setState: setTitleTR,
+    },
+    {
+      title: "İsim (İngilizce)",
+      value: "title.en",
+      not_visible: true,
+      type: "textinput",
+      state: titleEN,
+      setState: setTitleEN,
+    },
+    {
+      title: "İsim (Yunanca)",
+      value: "title.gr",
+      not_visible: true,
+      type: "textinput",
+      state: titleGR,
+      setState: setTitleGR,
+    },
+    {
+      title: "İsim (Arapça)",
+      value: "title.ar",
+      not_visible: true,
+      type: "textinput",
+      state: titleAR,
+      setState: setTitleAR,
     },
     {
       title: "Resim",
@@ -291,12 +393,39 @@ const ProductsScreen = () => {
       setState: setImage,
     },
     {
-      title: "Hakkında",
-      value: "description",
+      title: "Hakkında (Türkçe)",
+      value: "description.tr",
       not_visible: true,
       type: "textinput",
-      state: description,
-      setState: setDescription,
+      state: descriptionTR,
+      setState: setDescriptionTR,
+      multiline: true,
+    },
+    {
+      title: "Hakkında (İngilizce)",
+      value: "description.en",
+      not_visible: true,
+      type: "textinput",
+      state: descriptionEN,
+      setState: setDescriptionEN,
+      multiline: true,
+    },
+    {
+      title: "Hakkında (Yunanca)",
+      value: "description.gr",
+      not_visible: true,
+      type: "textinput",
+      state: descriptionGR,
+      setState: setDescriptionGR,
+      multiline: true,
+    },
+    {
+      title: "Hakkında (Arapça)",
+      value: "description.ar",
+      not_visible: true,
+      type: "textinput",
+      state: descriptionAR,
+      setState: setDescriptionAR,
       multiline: true,
     },
     {
@@ -335,12 +464,36 @@ const ProductsScreen = () => {
       condition: category === "0",
     },
     {
-      title: "İçindekiler Ek Yazısı",
-      value: "ingredients_text",
+      title: "İçindekiler Ek Yazısı (Türkçe)",
+      value: "ingredients_text.tr",
       not_visible: true,
       type: "textinput",
-      state: ingredientsText,
-      setState: setIngredientsText,
+      state: ingredientsTextTR,
+      setState: setIngredientsTextTR,
+    },
+    {
+      title: "İçindekiler Ek Yazısı (İngilizce)",
+      value: "ingredients_text.en",
+      not_visible: true,
+      type: "textinput",
+      state: ingredientsTextEN,
+      setState: setIngredientsTextEN,
+    },
+    {
+      title: "İçindekiler Ek Yazısı (Yunanca)",
+      value: "ingredients_text.gr",
+      not_visible: true,
+      type: "textinput",
+      state: ingredientsTextGR,
+      setState: setIngredientsTextGR,
+    },
+    {
+      title: "İçindekiler Ek Yazısı (Arapça)",
+      value: "ingredients_text.ar",
+      not_visible: true,
+      type: "textinput",
+      state: ingredientsTextAR,
+      setState: setIngredientsTextAR,
     },
     {
       title: "Boyut",

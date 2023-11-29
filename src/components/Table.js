@@ -135,13 +135,19 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
   } else if (value.is_expense) {
     if (data[value.value] === "0") {
       return <td>6.000.000 TL</td>;
-    } else  if (data[value.value] === "1") {
+    } else if (data[value.value] === "1") {
       return <td>10.000.000 TL</td>;
     } else {
       return <td>10.000.000 TL üstü</td>;
     }
   } else {
-    return <td>{data[value.value]}</td>;
+    return (
+      <td>
+        {value.value.includes(".")
+          ? data[value.value.split(".")[0]][value.value.split(".")[1]]
+          : data[value.value]}
+      </td>
+    );
   }
 };
 

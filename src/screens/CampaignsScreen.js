@@ -29,9 +29,18 @@ const CampaignsScreen = () => {
   const [id, setId] = useState();
 
   const [image, setImage] = useState("");
-  const [title, setTitle] = useState("");
-  const [subtitle, setSubtitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [titleTR, setTitleTR] = useState("");
+  const [titleEN, setTitleEN] = useState("");
+  const [titleGR, setTitleGR] = useState("");
+  const [titleAR, setTitleAR] = useState("");
+  const [subtitleTR, setSubtitleTR] = useState("");
+  const [subtitleEN, setSubtitleEN] = useState("");
+  const [subtitleGR, setSubtitleGR] = useState("");
+  const [subtitleAR, setSubtitleAR] = useState("");
+  const [descriptionTR, setDescriptionTR] = useState("");
+  const [descriptionEN, setDescriptionEN] = useState("");
+  const [descriptionGR, setDescriptionGR] = useState("");
+  const [descriptionAR, setDescriptionAR] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [branch, setBranch] = useState("");
@@ -94,9 +103,19 @@ const CampaignsScreen = () => {
     try {
       let parameters = {
         image: image,
-        title: title,
-        subtitle: subtitle,
-        description: description,
+        title: { tr: titleTR, en: titleEN, gr: titleGR, ar: titleAR },
+        subtitle: {
+          tr: subtitleTR,
+          en: subtitleEN,
+          gr: subtitleGR,
+          ar: subtitleAR,
+        },
+        description: {
+          tr: descriptionTR,
+          en: descriptionEN,
+          gr: descriptionGR,
+          ar: descriptionAR,
+        },
         start_date: startDate,
         end_date: endDate,
         branch_id: branch,
@@ -129,9 +148,19 @@ const CampaignsScreen = () => {
       let parameters = {
         campaign_id: id,
         image: image,
-        title: title,
-        subtitle: subtitle,
-        description: description,
+        title: { tr: titleTR, en: titleEN, gr: titleGR, ar: titleAR },
+        subtitle: {
+          tr: subtitleTR,
+          en: subtitleEN,
+          gr: subtitleGR,
+          ar: subtitleAR,
+        },
+        description: {
+          tr: descriptionTR,
+          en: descriptionEN,
+          gr: descriptionGR,
+          ar: descriptionAR,
+        },
         start_date: startDate,
         end_date: endDate,
         branch_id: branch,
@@ -189,9 +218,18 @@ const CampaignsScreen = () => {
       setId(item._id);
     }
     setImage(item === undefined ? "" : item.image);
-    setTitle(item === undefined ? "" : item.title);
-    setSubtitle(item === undefined ? "" : item.subtitle);
-    setDescription(item === undefined ? "" : item.description);
+    setTitleTR(item === undefined ? "" : item.title.tr);
+    setTitleEN(item === undefined ? "" : item.title.en);
+    setTitleGR(item === undefined ? "" : item.title.gr);
+    setTitleAR(item === undefined ? "" : item.title.ar);
+    setSubtitleTR(item === undefined ? "" : item.subtitle.tr);
+    setSubtitleEN(item === undefined ? "" : item.subtitle.en);
+    setSubtitleGR(item === undefined ? "" : item.subtitle.gr);
+    setSubtitleAR(item === undefined ? "" : item.subtitle.ar);
+    setDescriptionTR(item === undefined ? "" : item.description.tr);
+    setDescriptionEN(item === undefined ? "" : item.description.en);
+    setDescriptionGR(item === undefined ? "" : item.description.gr);
+    setDescriptionAR(item === undefined ? "" : item.description.ar);
     setStartDate(item === undefined ? "" : item.start_date);
     setEndDate(item === undefined ? "" : item.end_date);
     setBranch(item === undefined ? "" : item.branch_id);
@@ -208,27 +246,102 @@ const CampaignsScreen = () => {
       setState: setImage,
     },
     {
-      title: "Başlık",
-      value: "title",
+      title: "Başlık (Türkçe)",
+      value: "title.tr",
       type: "textinput",
-      state: title,
-      setState: setTitle,
+      state: titleTR,
+      setState: setTitleTR,
     },
     {
-      title: "Alt Başlık",
-      value: "subtitle",
+      title: "Başlık (İngilizce)",
+      value: "title.en",
       not_visible: true,
       type: "textinput",
-      state: subtitle,
-      setState: setSubtitle,
+      state: titleEN,
+      setState: setTitleEN,
     },
     {
-      title: "İçerik",
-      value: "description",
+      title: "Başlık (Yunanca)",
+      value: "title.gr",
       not_visible: true,
       type: "textinput",
-      state: description,
-      setState: setDescription,
+      state: titleGR,
+      setState: setTitleGR,
+    },
+    {
+      title: "Başlık (Arapça)",
+      value: "title.ar",
+      not_visible: true,
+      type: "textinput",
+      state: titleAR,
+      setState: setTitleAR,
+    },
+    {
+      title: "Alt Başlık (Türkçe)",
+      value: "subtitle.tr",
+      not_visible: true,
+      type: "textinput",
+      state: subtitleTR,
+      setState: setSubtitleTR,
+    },
+    {
+      title: "Alt Başlık (İngilizce)",
+      value: "subtitle.en",
+      not_visible: true,
+      type: "textinput",
+      state: subtitleEN,
+      setState: setSubtitleEN,
+    },
+    {
+      title: "Alt Başlık (Yunanca)",
+      value: "subtitle.gr",
+      not_visible: true,
+      type: "textinput",
+      state: subtitleGR,
+      setState: setSubtitleGR,
+    },
+    {
+      title: "Alt Başlık (Arapça)",
+      value: "subtitle.ar",
+      not_visible: true,
+      type: "textinput",
+      state: subtitleAR,
+      setState: setSubtitleAR,
+    },
+    {
+      title: "İçerik (Türkçe)",
+      value: "description.tr",
+      not_visible: true,
+      type: "textinput",
+      state: descriptionTR,
+      setState: setDescriptionTR,
+      multiline: true,
+    },
+    {
+      title: "İçerik (İngilizce)",
+      value: "description.en",
+      not_visible: true,
+      type: "textinput",
+      state: descriptionEN,
+      setState: setDescriptionEN,
+      multiline: true,
+    },
+    {
+      title: "İçerik (Yunanca)",
+      value: "description.gr",
+      not_visible: true,
+      type: "textinput",
+      state: descriptionGR,
+      setState: setDescriptionGR,
+      multiline: true,
+    },
+    {
+      title: "İçerik (Arapça)",
+      value: "description.ar",
+      not_visible: true,
+      type: "textinput",
+      state: descriptionAR,
+      setState: setDescriptionAR,
       multiline: true,
     },
     {
