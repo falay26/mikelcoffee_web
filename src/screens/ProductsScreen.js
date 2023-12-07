@@ -50,6 +50,9 @@ const ProductsScreen = () => {
   const [contains, setContains] = useState([]);
   const [coin, setCoin] = useState("");
   const [vegan, setVegan] = useState(false);
+  //Filters
+  const [filteredData, setFilteredData] = useState([]);
+  const [nameFilter, setNameFilter] = useState("");
 
   useEffect(() => {
     fetchDatas();
@@ -359,6 +362,12 @@ const ProductsScreen = () => {
       type: "textinput",
       state: titleTR,
       setState: setTitleTR,
+      filter: {
+        title: "İsim (Türkçe)",
+        state: nameFilter,
+        setState: setNameFilter,
+        type: "input",
+      },
     },
     {
       title: "İsim (İngilizce)",
@@ -602,6 +611,22 @@ const ProductsScreen = () => {
     },
   ];
 
+  //FilterEffect
+  useEffect(() => {
+    if (nameFilter === "") {
+      setFilteredData(data);
+    } else {
+      let new_data = data;
+      if (nameFilter !== "") {
+        new_data = new_data.filter(
+          (i) =>
+            i?.title?.tr?.toLowerCase().indexOf(nameFilter.toLowerCase()) > -1
+        );
+      }
+      setFilteredData(new_data);
+    }
+  }, [data, nameFilter]);
+
   return (
     <PanelContainer>
       {loading ? (
@@ -621,7 +646,7 @@ const ProductsScreen = () => {
           <PageTitle
             title={"Ürünler"}
             product={true}
-            total={data.length}
+            total={filteredData.length}
             onPress={() => {
               resetValues();
               setEdit(true);
@@ -630,7 +655,7 @@ const ProductsScreen = () => {
           />
           <Table
             values={values}
-            data={data}
+            data={filteredData}
             loading={false}
             onEdit={(item) => {
               resetValues(item);

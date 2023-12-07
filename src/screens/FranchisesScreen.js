@@ -9,45 +9,74 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const APIS = { get: "/get_all_franchises" };
 
-const values = [
-  {
-    title: "Ad Soyad",
-    value: "name",
-  },
-  {
-    title: "Şehir",
-    value: "city",
-  },
-  {
-    title: "Telefon",
-    value: "phone",
-    is_phone: true,
-  },
-  {
-    title: "Tecrübe",
-    value: "experience_id",
-    is_experience: true,
-  },
-  {
-    title: "Detay",
-    value: "details",
-  },
-  {
-    title: "Miktar",
-    value: "expense_id",
-    is_expense: true,
-  },
-  {
-    title: "Mesaj",
-    value: "message",
-  },
-];
-
 const FranchisesScreen = () => {
   const axiosPrivate = useAxiosPrivate();
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  //Filters
+  const [filteredData, setFilteredData] = useState([]);
+  const [experienceFilter, setExperienceFilter] = useState("");
+  const [expenseFilter, setExpenseFilter] = useState("");
+
+  const values = [
+    {
+      title: "Ad Soyad",
+      value: "name",
+    },
+    {
+      title: "Şehir",
+      value: "city",
+    },
+    {
+      title: "Telefon",
+      value: "phone",
+      is_phone: true,
+    },
+    {
+      title: "Tecrübe",
+      value: "experience_id",
+      is_experience: true,
+      filter: {
+        title: "Tecrübe",
+        state: experienceFilter,
+        setState: setExperienceFilter,
+        type: "choiceinput",
+        options: [
+          { _id: "", name: "Hepsi" },
+          { _id: "2", name: "Tecrübesiz" },
+          { _id: "1", name: "Tecrübeli" },
+        ],
+        option_title: "name",
+      },
+    },
+    {
+      title: "Detay",
+      value: "details",
+    },
+    {
+      title: "Miktar",
+      value: "expense_id",
+      is_expense: true,
+      filter: {
+        title: "Miktar",
+        state: expenseFilter,
+        setState: setExpenseFilter,
+        type: "choiceinput",
+        options: [
+          { _id: "", name: "Hepsi" },
+          { _id: "0", name: "6.000.000 TL" },
+          { _id: "1", name: "10.000.000 TL" },
+          { _id: "2", name: "10.000.000 TL üstü" },
+        ],
+        option_title: "name",
+      },
+    },
+    {
+      title: "Mesaj",
+      value: "message",
+    },
+  ];
 
   useEffect(() => {
     const fetchDatas = async () => {
@@ -79,14 +108,30 @@ const FranchisesScreen = () => {
     fetchDatas();
   }, []);
 
+  //FilterEffect
+  useEffect(() => {
+    if (experienceFilter === "" && expenseFilter === "") {
+      setFilteredData(data);
+    } else {
+      let new_data = data;
+      if (experienceFilter !== "") {
+        new_data = new_data.filter((i) => i.experience_id === experienceFilter);
+      }
+      if (expenseFilter !== "") {
+        new_data = new_data.filter((i) => i.expense_id === expenseFilter);
+      }
+      setFilteredData(new_data);
+    }
+  }, [data, experienceFilter, expenseFilter]);
+
   return (
     <PanelContainer>
       {loading ? (
         <Loading />
       ) : (
         <>
-          <PageTitle title={"Başvurular"} total={data.length} />
-          <Table values={values} data={data} loading={false} />
+          <PageTitle title={"Başvurular"} total={filteredData.length} />
+          <Table values={values} data={filteredData} loading={false} />
         </>
       )}
     </PanelContainer>

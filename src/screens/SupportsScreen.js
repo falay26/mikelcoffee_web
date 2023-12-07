@@ -9,27 +9,54 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const APIS = { get: "/get_all_supports" };
 
-const values = [
-  {
-    title: "Şube",
-    value: "branch_id",
-    is_branch: true,
-  },
-  {
-    title: "Konu",
-    value: "subject_id",
-  },
-  {
-    title: "Mesaj",
-    value: "text",
-  },
-];
-
 const SupportsScreen = () => {
   const axiosPrivate = useAxiosPrivate();
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  //Filters
+  const [filteredData, setFilteredData] = useState([]);
+  const [branchFilter, setBranchFilter] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState("");
+
+  const values = [
+    {
+      title: "Şube",
+      value: "branch_id",
+      is_branch: true,
+      filter: {
+        title: "Şube İsmi",
+        state: branchFilter,
+        setState: setBranchFilter,
+        type: "input",
+      },
+    },
+    {
+      title: "Konu",
+      value: "subject_id",
+      is_subject: true,
+      filter: {
+        title: "Konu",
+        state: subjectFilter,
+        setState: setSubjectFilter,
+        type: "choiceinput",
+        options: [
+          { _id: "", name: "Hepsi" },
+          { _id: "0", name: "Genel" },
+          { _id: "1", name: "Hizmet Kalitesi" },
+          { _id: "2", name: "Mikel Mobil Uygulaması" },
+          { _id: "3", name: "Mikel Websitesi" },
+          { _id: "4", name: "Ürün Hakkında" },
+          { _id: "5", name: "Mağaza Geribildirimi" },
+        ],
+        option_title: "name",
+      },
+    },
+    {
+      title: "Mesaj",
+      value: "text",
+    },
+  ];
 
   useEffect(() => {
     const fetchDatas = async () => {
@@ -61,14 +88,35 @@ const SupportsScreen = () => {
     fetchDatas();
   }, []);
 
+  //FilterEffect
+  useEffect(() => {
+    if (branchFilter === "" && subjectFilter === "") {
+      setFilteredData(data);
+    } else {
+      let new_data = data;
+      if (branchFilter !== "") {
+        new_data = new_data.filter(
+          (i) =>
+            i?.branch_info[0]?.name
+              ?.toLowerCase()
+              .indexOf(branchFilter.toLowerCase()) > -1
+        );
+      }
+      if (subjectFilter !== "") {
+        new_data = new_data.filter((i) => i?.subject_id === subjectFilter);
+      }
+      setFilteredData(new_data);
+    }
+  }, [data, branchFilter, subjectFilter]);
+
   return (
     <PanelContainer>
       {loading ? (
         <Loading />
       ) : (
         <>
-          <PageTitle title={"Destekler"} total={data.length} />
-          <Table values={values} data={data} loading={false} />
+          <PageTitle title={"Destekler"} total={filteredData.length} />
+          <Table values={values} data={filteredData} loading={false} />
         </>
       )}
     </PanelContainer>

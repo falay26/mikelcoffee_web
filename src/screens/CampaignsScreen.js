@@ -45,6 +45,10 @@ const CampaignsScreen = () => {
   const [endDate, setEndDate] = useState("");
   const [branch, setBranch] = useState("");
   const [online, setOnline] = useState(false);
+  //Filters
+  const [filteredData, setFilteredData] = useState([]);
+  const [startFilter, setStartFilter] = useState("");
+  const [endFilter, setEndFilter] = useState("");
 
   useEffect(() => {
     fetchDatas();
@@ -351,6 +355,12 @@ const CampaignsScreen = () => {
       type: "dateselection",
       state: startDate,
       setState: setStartDate,
+      filter: {
+        title: "Başlangıç",
+        state: startFilter,
+        setState: setStartFilter,
+        type: "input",
+      },
     },
     {
       title: "Bitiş Tarihi",
@@ -359,6 +369,12 @@ const CampaignsScreen = () => {
       type: "dateselection",
       state: endDate,
       setState: setEndDate,
+      filter: {
+        title: "Son",
+        state: endFilter,
+        setState: setEndFilter,
+        type: "input",
+      },
     },
     {
       title: "Şube",
@@ -384,6 +400,37 @@ const CampaignsScreen = () => {
       is_edit: true,
     },
   ];
+
+  //FilterEffect
+  useEffect(() => {
+    if (startFilter === "" && endFilter === "") {
+      setFilteredData(data);
+    } else {
+      let new_data = data;
+      if (startFilter !== "") {
+        new_data = new_data.filter((i) => {
+          var myDate = i.start_date?.split("T")[0];
+          myDate = myDate?.split("-");
+          var newDate = new Date(myDate[0], myDate[1] - 1, myDate[2]);
+          var myDate0 = startFilter?.split("-");
+          var newDate0 = new Date(myDate0[0], myDate0[1] - 1, myDate0[2]);
+          return newDate >= newDate0;
+        });
+      }
+      if (endFilter !== "") {
+        new_data = new_data.filter((i) => {
+          var myDate = i.end_date?.split("T")[0];
+          myDate = myDate?.split("-");
+          var newDate = new Date(myDate[0], myDate[1] - 1, myDate[2]);
+          var myDate0 = endFilter?.split("-");
+          var newDate0 = new Date(myDate0[0], myDate0[1] - 1, myDate0[2]);
+          return newDate <= newDate0;
+        });
+      }
+      setFilteredData(new_data);
+    }
+  }, [data, startFilter, endFilter]);
+
   return (
     <PanelContainer>
       {loading ? (
@@ -403,7 +450,7 @@ const CampaignsScreen = () => {
           <PageTitle
             title={"Kampanyalar"}
             campaign={true}
-            total={data.length}
+            total={filteredData.length}
             onPress={() => {
               resetValues();
               setEdit(true);
@@ -412,7 +459,7 @@ const CampaignsScreen = () => {
           />
           <Table
             values={values}
-            data={data}
+            data={filteredData}
             loading={false}
             onEdit={(item) => {
               resetValues(item);

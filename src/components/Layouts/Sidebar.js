@@ -49,6 +49,10 @@ const Sidebar = ({ open, setOpen }) => {
       link: "notifications",
     },
     {
+      title: "Siparişler",
+      link: "orders",
+    },
+    {
       title: "Destekler",
       link: "supports",
     },

@@ -1,6 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 //Components
 import Pagination from "./Pagination";
 import DeleteModal from "./Modals/DeleteModal";
@@ -140,6 +145,29 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
     } else {
       return <td>10.000.000 TL üstü</td>;
     }
+  } else if (value.is_subject) {
+    const subject_returner = (id) => {
+      if (id === "0") {
+        return "Genel";
+      }
+      if (id === "1") {
+        return "Hizmet Kalitesi";
+      }
+      if (id === "2") {
+        return "Mikel Mobil Uygulaması";
+      }
+      if (id === "3") {
+        return "Mikel Websitesi";
+      }
+      if (id === "4") {
+        return "Ürün Hakkında";
+      }
+      if (id === "5") {
+        return "Mağaza Geribildirimi";
+      }
+    };
+    let formatted_subject = subject_returner(data[value.value]);
+    return <td>{formatted_subject}</td>;
   } else {
     return (
       <td>
@@ -148,6 +176,64 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
           : data[value.value]}
       </td>
     );
+  }
+};
+
+const FilterReturner = ({ filter }) => {
+  if (filter?.type === "input") {
+    return (
+      <th>
+        <TextField
+          placeholder={filter.title}
+          value={filter.state}
+          onChange={(e) => filter.setState(e.target.value)}
+          variant="standard"
+        />
+      </th>
+    );
+  } else if (filter?.type === "ages") {
+    return (
+      <th>
+        <th>
+          <TextField
+            placeholder={filter.title}
+            value={filter.state}
+            onChange={(e) => filter.setState(e.target.value)}
+            variant="standard"
+          />
+        </th>
+        <th>
+          <TextField
+            placeholder={filter.title1}
+            value={filter.state1}
+            onChange={(e) => filter.setState1(e.target.value)}
+            variant="standard"
+          />
+        </th>
+      </th>
+    );
+  } else if (filter?.type === "choiceinput") {
+    return (
+      <th>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">{filter.title}</InputLabel>
+          <Select
+            id={filter.title}
+            label={filter.title}
+            value={filter.state}
+            onChange={(e) => filter.setState(e.target.value)}
+          >
+            {filter.options?.map((option, index) => (
+              <MenuItem key={index} value={option._id}>
+                {option[filter.option_title]}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </th>
+    );
+  } else {
+    return null;
   }
 };
 
@@ -166,6 +252,7 @@ const TableContainerUsers = ({
   const indexOfLastData = currentPage * data_per_page;
   const indexOfFirstData = indexOfLastData - data_per_page;
   const currentDatas = data.slice(indexOfFirstData, indexOfLastData);
+  const has_filter = values.filter((i) => i?.filter !== undefined).length > 0;
 
   return (
     <>
@@ -176,6 +263,16 @@ const TableContainerUsers = ({
           <>
             <Table striped bordered hover>
               <thead>
+                <tr>
+                  {has_filter &&
+                    values.map((item) => {
+                      if (item?.filter === undefined && !item.not_visible) {
+                        return <th></th>;
+                      } else {
+                        return <FilterReturner filter={item.filter} />;
+                      }
+                    })}
+                </tr>
                 <tr>
                   {values.map((item) => {
                     if (item.not_visible) {

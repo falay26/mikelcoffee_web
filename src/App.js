@@ -20,6 +20,7 @@ import Campaigns from "./screens/CampaignsScreen";
 import Notifications from "./screens/NotificationsScreen";
 import Supports from "./screens/SupportsScreen";
 import Franchises from "./screens/FranchisesScreen";
+import Orders from "./screens/OrdersScreen";
 //TODO: Transections and Orders
 //Constants
 import Roles from "./constants/Roles";
@@ -87,6 +88,10 @@ function App() {
             {
               path: "franchises",
               element: <Franchises />,
+            },
+            {
+              path: "orders",
+              element: <Orders />,
             },
             //Other screen will be added here.
           ],
