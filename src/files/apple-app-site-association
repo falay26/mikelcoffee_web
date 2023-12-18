@@ -1,4 +1,5 @@
-"applinks": {
+{
+  "applinks": {
     "details": [
       {
         "appIDs": [
@@ -10,15 +11,12 @@
             "comment": "Matches any URL."
           }
         ]
-    }
-  ]
-},
-"webcredentials": {
-  "apps": [
-    "9A3G5GC26B.com.mikel.coffee"
-  ]
-},
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "9A3G5GC26B.com.mikel.coffee"
+    ]
+  }
 }
-
-//TODO: replace ABCDE12345 with Application Identifier Prefix after dev account...
-//https://stackoverflow.com/questions/32492119/how-where-to-define-an-app-id-prefixes-in-xcode
