@@ -2,7 +2,7 @@
     "details": [
       {
         "appIDs": [
-          "ABCDE12345.com.mikel.coffee"
+          "9A3G5GC26B.com.mikel.coffee"
         ],
         "components": [
           {
@@ -15,7 +15,7 @@
 },
 "webcredentials": {
   "apps": [
-    "ABCDE12345.com.mikel.coffee"
+    "9A3G5GC26B.com.mikel.coffee"
   ]
 },
 }
