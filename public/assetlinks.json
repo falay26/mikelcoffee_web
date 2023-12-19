@@ -3,7 +3,7 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "",
+      "package_name": "com.mikel.coffee",
       "sha256_cert_fingerprints": [
         "2D:E2:2E:1E:1D:D9:BD:A5:00:BA:F9:3B:A2:5B:0C:86:10:A1:CC:80:2E:85:44:45:3B:4F:A4:DE:30:16:DD:39"
       ]
