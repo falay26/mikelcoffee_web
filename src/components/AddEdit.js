@@ -71,7 +71,11 @@ const ItemReturner = ({ item }) => {
         >
           {item.options?.map((option, index) => (
             <MenuItem key={index} value={option._id}>
-              {option[item.option_title]}
+              {item.option_title.includes(".")
+                ? option[item.option_title.split(".")[0]][
+                    item.option_title.split(".")[1]
+                  ]
+                : option[item.option_title]}
             </MenuItem>
           ))}
         </Select>

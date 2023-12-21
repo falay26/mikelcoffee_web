@@ -7,6 +7,7 @@ const PageTitle = ({
   product,
   story,
   campaign,
+  notification,
   onPress,
 }) => {
   return (
@@ -30,6 +31,11 @@ const PageTitle = ({
       {campaign && (
         <Button onClick={onPress} color="primary" variant="text">
           Kampanya Ekle
+        </Button>
+      )}
+      {notification && (
+        <Button onClick={onPress} color="primary" variant="text">
+          Bildirim Ekle
         </Button>
       )}
       {total ? <h1>Toplam: {total}</h1> : null}
