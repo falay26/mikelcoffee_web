@@ -47,6 +47,7 @@ const BranchesScreen = () => {
   const [longitude, setLongitude] = useState("");
   const [getir, setGetir] = useState("");
   const [yemek, setYemek] = useState("");
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     fetchDatas();
@@ -105,6 +106,7 @@ const BranchesScreen = () => {
         longitude: longitude,
         getir: getir,
         yemek: yemek,
+        token: token,
       };
       const response = await axiosPrivate.post(
         APIS.add,
@@ -156,6 +158,7 @@ const BranchesScreen = () => {
         longitude: longitude,
         getir: getir,
         yemek: yemek,
+        token: token,
       };
       const response = await axiosPrivate.post(
         APIS.update,
@@ -228,8 +231,9 @@ const BranchesScreen = () => {
     setWorkingHours61(item === undefined ? "" : item.working_hours[13]);
     setLatitude(item === undefined ? "" : item.latitude);
     setLongitude(item === undefined ? "" : item.longitude);
-    setGetir(item === undefined ? "" : item.getir)
+    setGetir(item === undefined ? "" : item.getir);
     setYemek(item === undefined ? "" : item.yemek);
+    setToken(item === undefined ? "" : item.token);
   };
 
   const values = [
@@ -330,6 +334,14 @@ const BranchesScreen = () => {
       not_visible: true,
       state: yemek,
       setState: setYemek,
+    },
+    {
+      title: "Simpra Token",
+      value: "token",
+      type: "textinput",
+      not_visible: true,
+      state: token,
+      setState: setToken,
     },
     {
       title: "Düzenle/Sil",
