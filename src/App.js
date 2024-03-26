@@ -21,6 +21,7 @@ import Notifications from "./screens/NotificationsScreen";
 import Supports from "./screens/SupportsScreen";
 import Franchises from "./screens/FranchisesScreen";
 import Orders from "./screens/OrdersScreen";
+import Mcoins from "./screens/McoinsScreen";
 //TODO: Transections and Orders
 //Constants
 import Roles from "./constants/Roles";
@@ -92,6 +93,10 @@ function App() {
             {
               path: "orders",
               element: <Orders />,
+            },
+            {
+              path: "mcoins",
+              element: <Mcoins />,
             },
             //Other screen will be added here.
           ],

@@ -94,6 +94,20 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
         />
       </td>
     );
+  } else if (value.is_only_edit) {
+    return (
+      <td>
+        <img
+          className="edit_image"
+          src={require("../images/edit_icon.png")}
+          height="24"
+          width="24"
+          onClick={() => {
+            onEdit(data);
+          }}
+        />
+      </td>
+    );
   } else if (value.is_story) {
     return (
       <td>
@@ -171,7 +185,7 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
   } else {
     return (
       <td>
-        {value.value.includes(".")
+        {value.value?.includes(".")
           ? data[value.value.split(".")[0]][value.value.split(".")[1]]
           : data[value.value]}
       </td>

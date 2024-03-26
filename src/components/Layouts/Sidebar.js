@@ -60,6 +60,10 @@ const Sidebar = ({ open, setOpen }) => {
       title: "Başvurular",
       link: "franchises",
     },
+    {
+      title: "Mcoins",
+      link: "mcoins",
+    },
     //Others will be added here..
   ];
 
