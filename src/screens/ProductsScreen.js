@@ -50,6 +50,7 @@ const ProductsScreen = () => {
   const [contains, setContains] = useState([]);
   const [coin, setCoin] = useState("");
   const [vegan, setVegan] = useState(false);
+  const [shown, setShown] = useState(true);
   //Filters
   const [filteredData, setFilteredData] = useState([]);
   const [nameFilter, setNameFilter] = useState("");
@@ -115,6 +116,7 @@ const ProductsScreen = () => {
         contains: contains,
         coin: coin,
         vegan: vegan,
+        shown: shown,
       };
       const response = await axiosPrivate.post(
         APIS.add,
@@ -170,6 +172,7 @@ const ProductsScreen = () => {
         contains: contains,
         coin: coin,
         vegan: vegan,
+        shown: shown,
       };
       const response = await axiosPrivate.post(
         APIS.update,
@@ -247,6 +250,7 @@ const ProductsScreen = () => {
     setContains(item === undefined ? [] : item.contains);
     setCoin(item === undefined ? "" : item.coin);
     setVegan(item === undefined ? false : item.vegan);
+    setShown(item === undefined ? false : item.shown);
   };
 
   const ingredientsHandler = (bool, id) => {
@@ -512,9 +516,11 @@ const ProductsScreen = () => {
       state: sizes,
       setState: sizesHandler,
       options: [
-        { id: 0, title: "Küçük" },
-        { id: 1, title: "Orta" },
-        { id: 2, title: "Büyük" },
+        { id: 0, title: "4oz" },
+        { id: 1, title: "8oz" },
+        { id: 2, title: "12oz" },
+        { id: 3, title: "16oz" },
+        { id: 4, title: "20oz" },
       ],
       option_title: "title",
       condition: category === "0",
@@ -603,6 +609,14 @@ const ProductsScreen = () => {
       type: "checkbox",
       state: vegan,
       setState: setVegan,
+    },
+    {
+      title: "Gösterimde",
+      value: "shown",
+      not_visible: true,
+      type: "checkbox",
+      state: shown,
+      setState: setShown,
     },
     {
       title: "Düzenle/Sil",
