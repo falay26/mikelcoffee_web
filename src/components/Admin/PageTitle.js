@@ -7,6 +7,7 @@ const PageTitle = ({
   product,
   story,
   campaign,
+  giftcard,
   notification,
   onPress,
 }) => {
@@ -31,6 +32,11 @@ const PageTitle = ({
       {campaign && (
         <Button onClick={onPress} color="primary" variant="text">
           Kampanya Ekle
+        </Button>
+      )}
+      {giftcard && (
+        <Button onClick={onPress} color="primary" variant="text">
+          Hediye Kartı Ekle
         </Button>
       )}
       {notification && (

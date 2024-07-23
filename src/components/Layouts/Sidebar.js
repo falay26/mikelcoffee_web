@@ -64,6 +64,10 @@ const Sidebar = ({ open, setOpen }) => {
       title: "Mcoins",
       link: "mcoins",
     },
+    {
+      title: "Hediye Kartları",
+      link: "giftcards",
+    },
     //Others will be added here..
   ];
 
