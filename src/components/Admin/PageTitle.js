@@ -7,6 +7,7 @@ const PageTitle = ({
   product,
   story,
   campaign,
+  is_orders,
   giftcard,
   notification,
   onPress,
@@ -44,7 +45,11 @@ const PageTitle = ({
           Bildirim Ekle
         </Button>
       )}
-      {total ? <h1>Toplam: {total}</h1> : null}
+      {total ? (
+        <h1>
+          Toplam: {total} {is_orders && "TL"}
+        </h1>
+      ) : null}
     </div>
   );
 };

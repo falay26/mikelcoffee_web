@@ -182,6 +182,24 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
     };
     let formatted_subject = subject_returner(data[value.value]);
     return <td>{formatted_subject}</td>;
+  } else if (value.is_user) {
+    return <td>{data[value.value][0][value.user_title]}</td>;
+  } else if (value.is_check_price) {
+    return <td>{JSON.parse(data[value.value]).summary.unpaid_amount} TL</td>;
+  } else if (value.is_check_date) {
+    return <td>{JSON.parse(data[value.value]).business_date}</td>;
+  } else if (value.is_payment_type) {
+    let result = "";
+    if (data[value.value] === "cash") {
+      result = "Nakit";
+    }
+    if (data[value.value] === "coffee_point") {
+      result = "Sadakat Puanı";
+    }
+    if (data[value.value] === "mcoin") {
+      result = "Mikel Coin";
+    }
+    return <td>{result}</td>;
   } else {
     return (
       <td>
