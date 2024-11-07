@@ -44,10 +44,12 @@ const Sidebar = ({ open, setOpen }) => {
       title: "Hikayeler",
       link: "stories",
     },
+    /*
     {
       title: "Bildirimler",
       link: "notifications",
     },
+    */
     {
       title: "Siparişler",
       link: "orders",

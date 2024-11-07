@@ -79,7 +79,7 @@ const IysScreen = () => {
       );
       setLoading(false);
       if (response.status === 200) {
-        setData(response.data.data);
+        //setData(response.data.data);
       }
     } catch (err) {
       setLoading(false);
