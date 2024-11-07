@@ -10,7 +10,13 @@ const PageTitle = ({
   is_orders,
   giftcard,
   notification,
+  discount,
+  coupon,
+  survey,
+  iys,
+  luck,
   onPress,
+  onLuckPress,
 }) => {
   return (
     <div className="page_title_container">
@@ -45,11 +51,41 @@ const PageTitle = ({
           Bildirim Ekle
         </Button>
       )}
+      {discount && (
+        <Button onClick={onPress} color="primary" variant="text">
+          İndirim Ekle
+        </Button>
+      )}
+      {coupon && (
+        <Button onClick={onPress} color="primary" variant="text">
+          Kupon Ekle
+        </Button>
+      )}
+      {survey && (
+        <Button onClick={onPress} color="primary" variant="text">
+          Anket Ekle
+        </Button>
+      )}
+      {iys && (
+        <Button onClick={onPress} color="primary" variant="text">
+          Yeni ileti
+        </Button>
+      )}
+      {luck && (
+        <Button onClick={onPress} color="primary" variant="text">
+          Ödül Ekle
+        </Button>
+      )}
       {total ? (
         <h1>
           Toplam: {total} {is_orders && "TL"}
         </h1>
       ) : null}
+      {luck && (
+        <Button onClick={onLuckPress} color="primary" variant="text">
+          Geri dön
+        </Button>
+      )}
     </div>
   );
 };

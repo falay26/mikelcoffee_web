@@ -23,6 +23,11 @@ import Franchises from "./screens/FranchisesScreen";
 import Orders from "./screens/OrdersScreen";
 import Mcoins from "./screens/McoinsScreen";
 import Giftcards from "./screens/GiftcardsScreen";
+import Discounts from "./screens/DiscountsScreen";
+import Coupons from "./screens/CouponsScreen";
+import Surveys from "./screens/SurveysScreen";
+import Iys from "./screens/IysScreen";
+import Lucks from "./screens/LucksScreen";
 //TODO: Transections and Orders
 //Constants
 import Roles from "./constants/Roles";
@@ -102,6 +107,26 @@ function App() {
             {
               path: "giftcards",
               element: <Giftcards />,
+            },
+            {
+              path: "iys",
+              element: <Iys />,
+            },
+            {
+              path: "discounts",
+              element: <Discounts />,
+            },
+            {
+              path: "coupons",
+              element: <Coupons />,
+            },
+            {
+              path: "surveys",
+              element: <Surveys />,
+            },
+            {
+              path: "lucks",
+              element: <Lucks />,
             },
             //Other screen will be added here.
           ],

@@ -60,13 +60,35 @@ const Sidebar = ({ open, setOpen }) => {
       title: "Başvurular",
       link: "franchises",
     },
+    /*
     {
       title: "Mcoins",
       link: "mcoins",
     },
+    */
     {
       title: "Hediye Kartları",
       link: "giftcards",
+    },
+    {
+      title: "İleti Yönetim",
+      link: "iys",
+    },
+    {
+      title: "İndirimler",
+      link: "discounts",
+    },
+    {
+      title: "Kuponlar",
+      link: "coupons",
+    },
+    {
+      title: "Anketler",
+      link: "surveys",
+    },
+    {
+      title: "Şanslar",
+      link: "lucks",
     },
     //Others will be added here..
   ];

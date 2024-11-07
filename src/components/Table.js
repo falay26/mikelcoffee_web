@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
+import Button from "@mui/material/Button";
 //Components
 import Pagination from "./Pagination";
 import DeleteModal from "./Modals/DeleteModal";
@@ -200,6 +201,63 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
       result = "Mikel Coin";
     }
     return <td>{result}</td>;
+  } else if (value.is_gift) {
+    return (
+      <td>
+        <Button
+          onClick={() => value.onPress(data.user_id)}
+          color="primary"
+          variant="outlined"
+        >
+          {"Hediye Gönder"}
+        </Button>
+      </td>
+    );
+  } else if (value.is_personel) {
+    if (data[value.value]) {
+      return (
+        <td>
+          <Button
+            onClick={() => value.onPress(data)}
+            color="primary"
+            variant="outlined"
+          >
+            {"Kaldır"}
+          </Button>
+        </td>
+      );
+    } else {
+      return (
+        <td>
+          <Button
+            onClick={() => value.onPress(data)}
+            color="primary"
+            variant="outlined"
+          >
+            {"Ekle"}
+          </Button>
+        </td>
+      );
+    }
+  } else if (value.is_discount_type) {
+    const subject_returner = (id) => {
+      if (id === "1") {
+        return "İndirim";
+      }
+      if (id === "2") {
+        return "TL";
+      }
+      if (id === "3") {
+        return "Mcup";
+      }
+      if (id === "4") {
+        return "Ürün";
+      }
+    };
+    let formatted_subject = subject_returner(data[value.value]);
+    return <td>{formatted_subject}</td>;
+  } else if (value.is_discount_users) {
+    return <td>{data[value.value].length}</td>;
   } else {
     return (
       <td>

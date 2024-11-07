@@ -148,13 +148,13 @@ body {
   margin-bottom: 15px;
 }
 .capitalize {
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 400;
   color: var(--black);
   text-decoration: none;
 }
 .capitalize_selected {
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--main);
   text-decoration: none;
@@ -239,7 +239,7 @@ textarea[type="text"]:focus {
   height: calc(100vh - var(--header_height) - 2 * var(--default_pad));
 }
 .working_container {
-  width: '100%';
+  width: "100%";
   flex-direction: row;
 }
 .choices_container {
@@ -253,10 +253,33 @@ textarea[type="text"]:focus {
   justify-content: center;
   align-items: center;
   padding: 0px 5px;
-  background-color: #E3FAFF;
+  background-color: #e3faff;
 }
 .choice_container label input {
   margin-right: 5px;
+}
+.discount_image_container {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+.discount_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+.discount_type_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+.filter_row {
+  display: flex;
+  flex-direction: row;
 }
 
 /* RESPONSIVE */

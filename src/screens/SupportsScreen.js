@@ -4,10 +4,11 @@ import PanelContainer from "../components/Layouts/PanelContainer";
 import PageTitle from "../components/Admin/PageTitle";
 import Table from "../components/Table";
 import Loading from "../components/Loading";
+import DiscountScreen from "../components/Discount/DiscountScreen";
 //API
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-const APIS = { get: "/get_all_supports" };
+const APIS = { get: "/get_all_supports", get_products: "/get_all_products" };
 
 const SupportsScreen = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -18,6 +19,19 @@ const SupportsScreen = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [branchFilter, setBranchFilter] = useState("");
   const [subjectFilter, setSubjectFilter] = useState("");
+  //Discounts
+  const [discountIndex, setDiscountIndex] = useState(null);
+  const [discountUsers, setDiscountUsers] = useState([]);
+
+  const [name, setName] = useState("");
+  const [discountType, setDiscountType] = useState("");
+  const [minLimit, setMinLimit] = useState("");
+  const [percent, setPercent] = useState("");
+  const [amount, setAmount] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [productsLoading, setProductsLoading] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [productId, setProductId] = useState("");
 
   const values = [
     {
@@ -55,6 +69,22 @@ const SupportsScreen = () => {
     {
       title: "Mesaj",
       value: "text",
+    },
+    {
+      title: "Hediye",
+      value: "",
+      is_gift: true,
+      onPress: (data) => {
+        setDiscountType("");
+        setMinLimit("");
+        setPercent("");
+        setAmount("");
+        setEndDate("");
+        setProducts([]);
+        setProductId("");
+        setDiscountIndex(0);
+        setDiscountUsers([data]);
+      },
     },
   ];
 
@@ -109,15 +139,64 @@ const SupportsScreen = () => {
     }
   }, [data, branchFilter, subjectFilter]);
 
+  const getProducts = async () => {
+    setProductsLoading(true);
+    try {
+      let parameters = {};
+      const response = await axiosPrivate.post(
+        APIS.get_products,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      setProductsLoading(false);
+      if (response.status === 200) {
+        setProducts(response.data.data);
+      }
+    } catch (err) {
+      //alert(err);
+      setProductsLoading(false);
+      // TODO: Errorhandling..
+    }
+  };
+
   return (
     <PanelContainer>
       {loading ? (
         <Loading />
-      ) : (
+      ) : discountIndex === null ? (
         <>
           <PageTitle title={"Destekler"} total={filteredData.length} />
           <Table values={values} data={filteredData} loading={false} />
         </>
+      ) : (
+        <DiscountScreen
+          index={discountIndex}
+          setIndex={setDiscountIndex}
+          name={name}
+          setName={setName}
+          discountType={discountType}
+          setDiscountType={setDiscountType}
+          minLimit={minLimit}
+          setMinLimit={setMinLimit}
+          percent={percent}
+          setPercent={setPercent}
+          amount={amount}
+          setAmount={setAmount}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          productsLoading={productsLoading}
+          products={products}
+          productId={productId}
+          setProductId={setProductId}
+          onProductsSelected={getProducts}
+          onGiftSend={null}
+        />
       )}
     </PanelContainer>
   );
