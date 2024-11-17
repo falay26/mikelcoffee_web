@@ -25,7 +25,7 @@ const genders = [
   { _id: "2", name: "Erkek" },
 ];
 
-const Filters = ({ onClose, setIndex, children }) => {
+const Filters = ({ onClose, setIndex, setFilters, children }) => {
   const axiosPrivate = useAxiosPrivate();
 
   const [minAge, setMinAge] = useState("");
@@ -93,6 +93,26 @@ const Filters = ({ onClose, setIndex, children }) => {
       //alert(err);
       // TODO: Errorhandling..
     }
+  };
+
+  const handleDone = () => {
+    const filters = {
+      min_age: minAge,
+      max_age: maxAge,
+      gender: gender,
+      last_x_months: lastXMonths,
+      min_amount: minAmount,
+      branch_id: selectedBranch,
+      gifter: gifter,
+      supporter: supporter,
+      francher: francher,
+      user_date: userDate,
+      user_end_date: userEndDate,
+      city: city,
+      product_id: selectedProduct,
+    };
+    setFilters(filters);
+    setOpen(true);
   };
 
   return open ? (
@@ -263,7 +283,7 @@ const Filters = ({ onClose, setIndex, children }) => {
             onChange={(e) => setCity(e.target.value)}
           >
             {Cities?.map((city, index) => (
-              <MenuItem key={index} value={city._id}>
+              <MenuItem key={index} value={city.id}>
                 {city?.name}
               </MenuItem>
             ))}
@@ -289,7 +309,7 @@ const Filters = ({ onClose, setIndex, children }) => {
           </Select>
         </FormControl>
       </div>
-      <Button onClick={() => setOpen(true)} color="primary" variant="contained">
+      <Button onClick={handleDone} color="primary" variant="contained">
         Sıradaki
       </Button>
     </div>

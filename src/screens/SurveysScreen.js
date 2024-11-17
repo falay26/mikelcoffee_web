@@ -20,6 +20,8 @@ const APIS = {
 const SurveysScreen = () => {
   const axiosPrivate = useAxiosPrivate();
 
+  const [id, setId] = useState();
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   //Discounts
@@ -36,6 +38,7 @@ const SurveysScreen = () => {
   const [minPayment, setMinPayment] = useState("");
   const [discountIndex, setDiscountIndex] = useState(null);
   const [discountUsers, setDiscountUsers] = useState([]);
+  const [filters, setFilters] = useState({});
 
   const [name, setName] = useState("");
   const [discountType, setDiscountType] = useState("");
@@ -109,6 +112,11 @@ const SurveysScreen = () => {
       value: "name",
       type: "textinput",
     },
+    {
+      title: "Sil",
+      value: null,
+      is_delete: true,
+    },
   ];
 
   const getProducts = async () => {
@@ -142,14 +150,7 @@ const SurveysScreen = () => {
     try {
       let parameters = {
         name: name,
-        filters: {
-          branch_id: branchId,
-          day_id: dayId,
-          start_hour: startHour,
-          end_hour: endHour,
-          email: email,
-          min_payment: minPayment,
-        },
+        filters: filters,
         type: discountType,
         min_limit: minLimit,
         percent: percent,
@@ -158,6 +159,7 @@ const SurveysScreen = () => {
         product_id: productId,
         questions: questions,
       };
+      console.log(parameters); //TODO: check, you are here..
       const response = await axiosPrivate.post(
         APIS.add,
         JSON.stringify(parameters),
@@ -171,6 +173,32 @@ const SurveysScreen = () => {
       );
       if (response.status === 200) {
         setShown(false);
+        fetchDatas();
+      }
+    } catch (err) {
+      setLoading(false);
+      alert("Bir sorun oluştu, lütfen tekrar deneyiniz.");
+    }
+  };
+
+  const deleteHandler = async () => {
+    setLoading(true);
+    try {
+      let parameters = {
+        survey_id: id,
+      };
+      const response = await axiosPrivate.post(
+        APIS.delete,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
         fetchDatas();
       }
     } catch (err) {
@@ -227,6 +255,7 @@ const SurveysScreen = () => {
           onProductsSelected={getProducts}
           questions={questions}
           setQuestions={setQuestions}
+          setFilters={setFilters}
           onDone={handleDone}
         />
       ) : (
@@ -237,7 +266,13 @@ const SurveysScreen = () => {
             survey={true}
             onPress={() => setShown(true)}
           />
-          <Table values={values} data={data} loading={false} />
+          <Table
+            values={values}
+            data={data}
+            loading={false}
+            onDelete={() => deleteHandler()}
+            setId={setId}
+          />
         </>
       )}
     </PanelContainer>

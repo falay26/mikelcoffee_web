@@ -46,6 +46,7 @@ const IysScreen = () => {
   const [products, setProducts] = useState([]);
   const [productId, setProductId] = useState("");
   const [questions, setQuestions] = useState([]);
+  const [filters, setFilters] = useState({});
 
   useEffect(() => {
     if (data.length !== 0) {
@@ -185,7 +186,11 @@ const IysScreen = () => {
       {loading ? (
         <Loading />
       ) : shown ? (
-        <DiscountScreen isIys={true} setShown={setShown} />
+        <DiscountScreen
+          isIys={true}
+          setShown={setShown}
+          setFilters={setFilters}
+        />
       ) : (
         <>
           <PageTitle

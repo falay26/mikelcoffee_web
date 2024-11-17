@@ -95,6 +95,21 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
         />
       </td>
     );
+  } else if (value.is_delete) {
+    return (
+      <td>
+        <img
+          className="delete_image"
+          src={require("../images/red_trash.png")}
+          height="24"
+          width="24"
+          onClick={() => {
+            setId(data._id);
+            setOpen(true);
+          }}
+        />
+      </td>
+    );
   } else if (value.is_only_edit) {
     return (
       <td>
@@ -184,7 +199,24 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
     let formatted_subject = subject_returner(data[value.value]);
     return <td>{formatted_subject}</td>;
   } else if (value.is_user) {
-    return <td>{data[value.value][0][value.user_title]}</td>;
+    if (data[value.value].length !== 0) {
+      if (value.user_title === "phone") {
+        let formatted_phone_number =
+          "+90 " +
+          data[value.value][0][value.user_title].substring(0, 3) +
+          " " +
+          data[value.value][0][value.user_title].substring(3, 6) +
+          " " +
+          data[value.value][0][value.user_title].substring(6, 8) +
+          " " +
+          data[value.value][0][value.user_title].substring(8, 10);
+        return <td>{formatted_phone_number}</td>;
+      } else {
+        return <td>{data[value.value][0][value.user_title]}</td>;
+      }
+    } else {
+      return <td>Bilgi Yok</td>;
+    }
   } else if (value.is_check_price) {
     return <td>{JSON.parse(data[value.value]).summary.unpaid_amount} TL</td>;
   } else if (value.is_check_date) {

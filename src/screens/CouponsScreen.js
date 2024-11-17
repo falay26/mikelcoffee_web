@@ -20,6 +20,8 @@ const APIS = {
 const CouponsScreen = () => {
   const axiosPrivate = useAxiosPrivate();
 
+  const [id, setId] = useState();
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
@@ -29,14 +31,15 @@ const CouponsScreen = () => {
   const [code, setCode] = useState("");
   const [usageAmount, setUsageAmount] = useState("");
   const [usageFrequency, setUsageFrequency] = useState("");
-  const [branchId, setBranchId] = useState("");
-  const [dayId, setDayId] = useState("");
+  const [branchId, setBranchId] = useState([]);
+  const [dayId, setDayId] = useState([]);
   const [startHour, setStartHour] = useState("");
   const [endHour, setEndHour] = useState("");
   const [email, setEmail] = useState("");
   const [minPayment, setMinPayment] = useState("");
   const [discountIndex, setDiscountIndex] = useState(null);
   const [discountUsers, setDiscountUsers] = useState([]);
+  const [finalDate, setFinalDate] = useState("");
 
   const [name, setName] = useState("");
   const [discountType, setDiscountType] = useState("");
@@ -46,7 +49,7 @@ const CouponsScreen = () => {
   const [endDate, setEndDate] = useState("");
   const [productsLoading, setProductsLoading] = useState(false);
   const [products, setProducts] = useState([]);
-  const [productId, setProductId] = useState(null);
+  const [productId, setProductId] = useState([]);
 
   useEffect(() => {
     fetchDatas();
@@ -120,6 +123,11 @@ const CouponsScreen = () => {
       type: "textinput",
       is_discount_type: true,
     },
+    {
+      title: "Sil",
+      value: null,
+      is_delete: true,
+    },
   ];
 
   const getProducts = async () => {
@@ -156,13 +164,14 @@ const CouponsScreen = () => {
         code: code,
         usage_amount: usageAmount,
         usage_frequency: usageFrequency,
-        branch_id: branchId,
+        branch_ids: branchId,
         type: discountType,
         min_limit: minLimit,
         percent: percent,
         amount: amount,
         end_date: endDate,
-        product_id: productId,
+        product_ids: productId,
+        final_date: finalDate,
       };
       const response = await axiosPrivate.post(
         APIS.add,
@@ -177,6 +186,32 @@ const CouponsScreen = () => {
       );
       if (response.status === 200) {
         setShown(false);
+        fetchDatas();
+      }
+    } catch (err) {
+      setLoading(false);
+      alert("Bir sorun oluştu, lütfen tekrar deneyiniz.");
+    }
+  };
+
+  const deleteHandler = async () => {
+    setLoading(true);
+    try {
+      let parameters = {
+        coupon_id: id,
+      };
+      const response = await axiosPrivate.post(
+        APIS.delete,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
         fetchDatas();
       }
     } catch (err) {
@@ -212,6 +247,8 @@ const CouponsScreen = () => {
           setUsageAmount={setUsageAmount}
           usageFrequency={usageFrequency}
           setUsageFrequency={setUsageFrequency}
+          finalDate={finalDate}
+          setFinalDate={setFinalDate}
           index={discountIndex}
           setIndex={setDiscountIndex}
           name={name}
@@ -241,7 +278,13 @@ const CouponsScreen = () => {
             coupon={true}
             onPress={() => setShown(true)}
           />
-          <Table values={values} data={data} loading={false} />
+          <Table
+            values={values}
+            data={data}
+            loading={false}
+            onDelete={() => deleteHandler()}
+            setId={setId}
+          />
         </>
       )}
     </PanelContainer>

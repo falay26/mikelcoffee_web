@@ -19,10 +19,14 @@ const APIS = {
   delete: "/delete_luck",
   get_products: "/get_all_products",
   get_branches: "/get_all_branches",
+  get_admin: "/get_admin_controls",
+  update_admin: "/update_admin_controls",
 };
 
 const LucksScreen = () => {
   const axiosPrivate = useAxiosPrivate();
+
+  const [id, setId] = useState();
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -50,12 +54,14 @@ const LucksScreen = () => {
   const [endDate, setEndDate] = useState("");
   const [productsLoading, setProductsLoading] = useState(false);
   const [products, setProducts] = useState([]);
-  const [productId, setProductId] = useState(null);
+  const [productId, setProductId] = useState([]);
   //Lucks
   const [settingsOpen, setSettingOpen] = useState(true);
   const [luckType, setLuckType] = useState("0");
   const [luckFrequency, setLuckfrequency] = useState("");
   const [luckOpen, setLuckOpen] = useState(false);
+  const [admin, setAdmin] = useState(null);
+  const [saveOpen, setSaveOpen] = useState(false);
 
   useEffect(() => {
     if (discountIndex === null) {
@@ -66,7 +72,18 @@ const LucksScreen = () => {
   useEffect(() => {
     fetchDatas();
     fetchDatas1();
+    fetchDatas2();
   }, []);
+
+  useEffect(() => {
+    if (admin !== null) {
+      let result =
+        luckType === admin.luck_type &&
+        luckFrequency === admin.luck_frequency &&
+        luckOpen === admin.luck_open;
+      setSaveOpen(!result);
+    }
+  }, [luckType, luckFrequency, luckOpen, admin]);
 
   const fetchDatas = async () => {
     setLoading(true);
@@ -118,11 +135,44 @@ const LucksScreen = () => {
     }
   };
 
+  const fetchDatas2 = async () => {
+    setLoading(true);
+    try {
+      let parameters = {};
+      const response = await axiosPrivate.post(
+        APIS.get_admin,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      setLoading(false);
+      if (response.status === 200) {
+        setLuckType(response.data.data.luck_type);
+        setLuckfrequency(response.data.data.luck_frequency);
+        setLuckOpen(response.data.data.luck_open);
+        setAdmin(response.data.data);
+      }
+    } catch (err) {
+      setLoading(false);
+      // TODO: Errorhandling..
+    }
+  };
+
   const values = [
     {
       title: "Ad",
       value: "name",
       type: "textinput",
+    },
+    {
+      title: "Sil",
+      value: null,
+      is_delete: true,
     },
   ];
 
@@ -194,6 +244,60 @@ const LucksScreen = () => {
     }
   };
 
+  const handleUpdate = async () => {
+    setLoading(true);
+    try {
+      let parameters = {
+        luck_type: luckType,
+        luck_frequency: luckFrequency,
+        luck_open: luckOpen,
+      };
+      const response = await axiosPrivate.post(
+        APIS.update_admin,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        fetchDatas2();
+      }
+    } catch (err) {
+      setLoading(false);
+      alert("Bir sorun oluştu, lütfen tekrar deneyiniz.");
+    }
+  };
+
+  const deleteHandler = async () => {
+    setLoading(true);
+    try {
+      let parameters = {
+        luck_id: id,
+      };
+      const response = await axiosPrivate.post(
+        APIS.delete,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        fetchDatas();
+      }
+    } catch (err) {
+      setLoading(false);
+      alert("Bir sorun oluştu, lütfen tekrar deneyiniz.");
+    }
+  };
+
   return (
     <PanelContainer>
       {loading ? (
@@ -250,19 +354,17 @@ const LucksScreen = () => {
               }
               label={"Açık/Kapalı"}
             />
-            <Button
-              onClick={() => setSettingOpen(false)}
-              color="primary"
-              variant="contained"
-            >
-              Kaydet
-            </Button>
+            {saveOpen && (
+              <Button
+                onClick={handleUpdate}
+                color="primary"
+                variant="contained"
+              >
+                Kaydet
+              </Button>
+            )}
           </div>
-          <Button
-            onClick={() => setSettingOpen(false)}
-            color="primary"
-            variant="contained"
-          >
+          <Button onClick={handleUpdate} color="primary" variant="contained">
             Bütün ödülleri gör
           </Button>
         </div>
@@ -323,7 +425,13 @@ const LucksScreen = () => {
               setDiscountIndex(0);
             }}
           />
-          <Table values={values} data={data} loading={false} />
+          <Table
+            values={values}
+            data={data}
+            loading={false}
+            onDelete={() => deleteHandler()}
+            setId={setId}
+          />
         </>
       )}
     </PanelContainer>

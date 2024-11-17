@@ -20,20 +20,23 @@ const APIS = {
 const DiscountsScreen = () => {
   const axiosPrivate = useAxiosPrivate();
 
+  const [id, setId] = useState();
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
   //Discounts
   const [shown, setShown] = useState(false);
   const [branches, setBranches] = useState([]);
-  const [branchId, setBranchId] = useState("");
-  const [dayId, setDayId] = useState("");
+  const [branchId, setBranchId] = useState([]);
+  const [dayId, setDayId] = useState([]);
   const [startHour, setStartHour] = useState("");
   const [endHour, setEndHour] = useState("");
   const [email, setEmail] = useState("");
   const [minPayment, setMinPayment] = useState("");
   const [discountIndex, setDiscountIndex] = useState(null);
   const [discountUsers, setDiscountUsers] = useState([]);
+  const [finalDate, setFinalDate] = useState("");
 
   const [name, setName] = useState("");
   const [discountType, setDiscountType] = useState("");
@@ -43,7 +46,7 @@ const DiscountsScreen = () => {
   const [endDate, setEndDate] = useState("");
   const [productsLoading, setProductsLoading] = useState(false);
   const [products, setProducts] = useState([]);
-  const [productId, setProductId] = useState(null);
+  const [productId, setProductId] = useState([]);
 
   useEffect(() => {
     fetchDatas();
@@ -118,6 +121,11 @@ const DiscountsScreen = () => {
       type: "textinput",
       is_discount_users: true,
     },
+    {
+      title: "Sil",
+      value: null,
+      is_delete: true,
+    },
   ];
 
   const getProducts = async () => {
@@ -152,22 +160,49 @@ const DiscountsScreen = () => {
       let parameters = {
         name: name,
         filters: {
-          branch_id: branchId,
+          branch_ids: branchId,
           day_id: dayId,
           start_hour: startHour,
           end_hour: endHour,
           email: email,
           min_payment: minPayment,
+          final_date: finalDate,
         },
         type: discountType,
         min_limit: minLimit,
         percent: percent,
         amount: amount,
         end_date: endDate,
-        product_id: productId,
+        product_ids: productId,
       };
       const response = await axiosPrivate.post(
         APIS.add,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        fetchDatas();
+      }
+    } catch (err) {
+      setLoading(false);
+      alert("Bir sorun oluştu, lütfen tekrar deneyiniz.");
+    }
+  };
+
+  const deleteHandler = async () => {
+    setLoading(true);
+    try {
+      let parameters = {
+        discount_id: id,
+      };
+      const response = await axiosPrivate.post(
+        APIS.delete,
         JSON.stringify(parameters),
         {
           headers: {
@@ -207,6 +242,8 @@ const DiscountsScreen = () => {
           setEmail={setEmail}
           minPayment={minPayment}
           setMinPayment={setMinPayment}
+          finalDate={finalDate}
+          setFinalDate={setFinalDate}
           index={discountIndex}
           setIndex={setDiscountIndex}
           name={name}
@@ -236,7 +273,13 @@ const DiscountsScreen = () => {
             discount={true}
             onPress={() => setShown(true)}
           />
-          <Table values={values} data={data} loading={false} />
+          <Table
+            values={values}
+            data={data}
+            loading={false}
+            onDelete={() => deleteHandler()}
+            setId={setId}
+          />
         </>
       )}
     </PanelContainer>

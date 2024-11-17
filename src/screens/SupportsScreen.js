@@ -35,6 +35,11 @@ const SupportsScreen = () => {
 
   const values = [
     {
+      title: "Tarih",
+      value: "created_at",
+      is_birth: true,
+    },
+    {
       title: "Şube",
       value: "branch_id",
       is_branch: true,
@@ -44,6 +49,27 @@ const SupportsScreen = () => {
         setState: setBranchFilter,
         type: "input",
       },
+    },
+    {
+      title: "Ad",
+      value: "user_info",
+      type: "textinput",
+      user_title: "name",
+      is_user: true,
+    },
+    {
+      title: "Soyad",
+      value: "user_info",
+      type: "textinput",
+      user_title: "surname",
+      is_user: true,
+    },
+    {
+      title: "Telefon",
+      value: "user_info",
+      type: "textinput",
+      user_title: "phone",
+      is_user: true,
     },
     {
       title: "Konu",

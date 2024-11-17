@@ -39,6 +39,8 @@ const DiscountScreen = ({
   setEmail,
   minPayment,
   setMinPayment,
+  finalDate,
+  setFinalDate,
   code,
   setCode,
   usageAmount,
@@ -68,6 +70,7 @@ const DiscountScreen = ({
   onProductsSelected,
   questions,
   setQuestions,
+  setFilters,
   onDone,
 }) => {
   const [question, setQuestion] = useState("");
@@ -84,6 +87,32 @@ const DiscountScreen = ({
       onProductsSelected();
     }
   }, [index, discountType]);
+
+  const returnSelecteds = (array, container_array, setArray, bool) => {
+    return (
+      <div className="selection_row_container">
+        {array?.map((i) => {
+          return (
+            <div className="selection_container">
+              <p>
+                {bool
+                  ? container_array.filter((j) => j._id === i)[0].title.tr
+                  : container_array.filter((j) => j._id === i)[0].name}
+              </p>
+              <img
+                src={require("../../images/close_icon.png")}
+                height="18"
+                width="18"
+                onClick={() => {
+                  setArray((prev) => prev.filter((j) => j !== i));
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -109,8 +138,16 @@ const DiscountScreen = ({
                 labelId="demo-simple-select-label"
                 id={"Branch"}
                 label={"Şube"}
-                value={branchId}
-                onChange={(e) => setBranchId(e.target.value)}
+                value={null}
+                onChange={(e) => {
+                  setBranchId((prev) => {
+                    if (!prev.includes(e.target.value)) {
+                      return prev.concat([e.target.value]);
+                    } else {
+                      return prev.filter((i) => i !== e.target.value);
+                    }
+                  });
+                }}
               >
                 {branches?.map((branch, index) => (
                   <MenuItem key={index} value={branch._id}>
@@ -119,6 +156,7 @@ const DiscountScreen = ({
                 ))}
               </Select>
             </FormControl>
+            {returnSelecteds(branchId, branches, setBranchId)}
             <p>Lütfen Gün seçiniz.</p>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">
@@ -128,8 +166,16 @@ const DiscountScreen = ({
                 labelId="demo-simple-select-label"
                 id={"Day"}
                 label={"Gün"}
-                value={dayId}
-                onChange={(e) => setDayId(e.target.value)}
+                value={null}
+                onChange={(e) => {
+                  setDayId((prev) => {
+                    if (!prev.includes(e.target.value)) {
+                      return prev.concat([e.target.value]);
+                    } else {
+                      return prev.filter((i) => i !== e.target.value);
+                    }
+                  });
+                }}
               >
                 {days?.map((day, index) => (
                   <MenuItem key={index} value={day._id}>
@@ -138,6 +184,7 @@ const DiscountScreen = ({
                 ))}
               </Select>
             </FormControl>
+            {returnSelecteds(dayId, days, setDayId)}
             <p>Lütfen başlangıç saatini giriniz.</p>
             <TextField
               margin="none"
@@ -177,6 +224,17 @@ const DiscountScreen = ({
               label={"Minimum yükleme (TL)"}
               value={minPayment}
               onChange={(e) => setMinPayment(e.target.value)}
+              type="number"
+              fullWidth
+              variant="standard"
+              multiline={false}
+            />
+            <p>Lütfen kampanya bitiş tarihi giriniz.</p>
+            <TextField
+              margin="none"
+              label={"Bitiş Tarihi (YYYY-MM-DD)"}
+              value={finalDate}
+              onChange={(e) => setFinalDate(e.target.value)}
               type="number"
               fullWidth
               variant="standard"
@@ -253,8 +311,16 @@ const DiscountScreen = ({
                 labelId="demo-simple-select-label"
                 id={"Branch"}
                 label={"Şube"}
-                value={branchId}
-                onChange={(e) => setBranchId(e.target.value)}
+                value={null}
+                onChange={(e) => {
+                  setBranchId((prev) => {
+                    if (!prev.includes(e.target.value)) {
+                      return prev.concat([e.target.value]);
+                    } else {
+                      return prev.filter((i) => i !== e.target.value);
+                    }
+                  });
+                }}
               >
                 {branches?.map((branch, index) => (
                   <MenuItem key={index} value={branch._id}>
@@ -263,6 +329,18 @@ const DiscountScreen = ({
                 ))}
               </Select>
             </FormControl>
+            {returnSelecteds(branchId, branches, setBranchId)}
+            <p>Lütfen kampanya bitiş tarihi giriniz.</p>
+            <TextField
+              margin="none"
+              label={"Bitiş Tarihi (YYYY-MM-DD)"}
+              value={finalDate}
+              onChange={(e) => setFinalDate(e.target.value)}
+              type="number"
+              fullWidth
+              variant="standard"
+              multiline={false}
+            />
           </div>
           <Button
             onClick={() => setIndex(0)}
@@ -279,6 +357,7 @@ const DiscountScreen = ({
             setShown(false);
           }}
           setIndex={setIndex}
+          setFilters={setFilters}
           children={
             <div className="discount_container">
               <div>
@@ -429,6 +508,7 @@ const DiscountScreen = ({
             setShown(false);
           }}
           setIndex={setIndex}
+          setFilters={setFilters}
           children={
             <div className="discount_container">
               <div>
@@ -668,8 +748,16 @@ const DiscountScreen = ({
                       labelId="demo-simple-select-label"
                       id={"Product"}
                       label={"Ürün"}
-                      value={productId}
-                      onChange={(e) => setProductId(e.target.value)}
+                      value={null}
+                      onChange={(e) => {
+                        setProductId((prev) => {
+                          if (!prev.includes(e.target.value)) {
+                            return prev.concat([e.target.value]);
+                          } else {
+                            return prev.filter((i) => i !== e.target.value);
+                          }
+                        });
+                      }}
                     >
                       {products?.map((product, index) => (
                         <MenuItem key={index} value={product._id}>
@@ -678,6 +766,7 @@ const DiscountScreen = ({
                       ))}
                     </Select>
                   </FormControl>
+                  {returnSelecteds(productId, products, setProductId, true)}
                   <p>Lütfen indirim yüzdesi veya tutarı giriniz.</p>
                   <TextField
                     margin="none"
@@ -703,7 +792,6 @@ const DiscountScreen = ({
               ))}
           </div>
           <Button onClick={onDone} color="primary" variant="contained">
-            {/* TODO: change title.. */}
             {isDiscount && "İndirim Ekle"}
             {isCoupon && "Kupon Ekle"}
             {isSurvey && "Anket Ekle"}
