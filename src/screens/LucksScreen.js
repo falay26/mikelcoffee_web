@@ -364,7 +364,11 @@ const LucksScreen = () => {
               </Button>
             )}
           </div>
-          <Button onClick={handleUpdate} color="primary" variant="contained">
+          <Button
+            onClick={() => setSettingOpen(false)}
+            color="primary"
+            variant="contained"
+          >
             Bütün ödülleri gör
           </Button>
         </div>
