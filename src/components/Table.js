@@ -237,7 +237,7 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
     return (
       <td>
         <Button
-          onClick={() => value.onPress(data.user_id)}
+          onClick={() => value.onPress(data)}
           color="primary"
           variant="outlined"
         >

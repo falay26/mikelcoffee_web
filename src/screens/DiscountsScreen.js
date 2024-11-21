@@ -33,6 +33,8 @@ const DiscountsScreen = () => {
   const [startHour, setStartHour] = useState("");
   const [endHour, setEndHour] = useState("");
   const [email, setEmail] = useState("");
+  const [personel, setPersonel] = useState(false);
+  const [student, setStudent] = useState(false);
   const [minPayment, setMinPayment] = useState("");
   const [discountIndex, setDiscountIndex] = useState(null);
   const [discountUsers, setDiscountUsers] = useState([]);
@@ -165,6 +167,8 @@ const DiscountsScreen = () => {
           start_hour: startHour,
           end_hour: endHour,
           email: email,
+          personel: personel,
+          student: student,
           min_payment: minPayment,
           final_date: finalDate,
         },
@@ -240,6 +244,10 @@ const DiscountsScreen = () => {
           setEndHour={setEndHour}
           email={email}
           setEmail={setEmail}
+          personel={personel}
+          setPersonel={setPersonel}
+          student={student}
+          setStudent={setStudent}
           minPayment={minPayment}
           setMinPayment={setMinPayment}
           finalDate={finalDate}

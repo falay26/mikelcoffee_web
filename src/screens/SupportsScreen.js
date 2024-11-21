@@ -8,7 +8,11 @@ import DiscountScreen from "../components/Discount/DiscountScreen";
 //API
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-const APIS = { get: "/get_all_supports", get_products: "/get_all_products" };
+const APIS = {
+  get: "/get_all_supports",
+  get_products: "/get_all_products",
+  add_luck: "/add_luck_user",
+};
 
 const SupportsScreen = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -109,7 +113,7 @@ const SupportsScreen = () => {
         setProducts([]);
         setProductId("");
         setDiscountIndex(0);
-        setDiscountUsers([data]);
+        setDiscountUsers(data.user_info[0]._id);
       },
     },
   ];
@@ -191,6 +195,42 @@ const SupportsScreen = () => {
     }
   };
 
+  const addLuck = async () => {
+    try {
+      let parameters = {
+        user_id: discountUsers,
+        luck: {
+          name: name,
+          type: discountType,
+          min_limit: minLimit,
+          percent: percent,
+          amount: amount,
+          end_date: endDate,
+          product_ids: productId,
+        },
+        from_admin: true,
+      };
+      const response = await axiosPrivate.post(
+        APIS.add_luck,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        setDiscountIndex(null);
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      alert("Bir sorun oluştu, lütfen tekrar deneyiniz.");
+    }
+  };
+
   return (
     <PanelContainer>
       {loading ? (
@@ -202,6 +242,7 @@ const SupportsScreen = () => {
         </>
       ) : (
         <DiscountScreen
+          isSupport={true}
           index={discountIndex}
           setIndex={setDiscountIndex}
           name={name}
@@ -221,7 +262,7 @@ const SupportsScreen = () => {
           productId={productId}
           setProductId={setProductId}
           onProductsSelected={getProducts}
-          onGiftSend={null}
+          onDone={addLuck}
         />
       )}
     </PanelContainer>

@@ -5,6 +5,8 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 //Components
 import Loading from "../Loading";
 import Filters from "./Filters";
@@ -25,6 +27,7 @@ const DiscountScreen = ({
   isSurvey,
   isIys,
   isLuck,
+  isSupport,
   setShown,
   branches,
   branchId,
@@ -37,6 +40,10 @@ const DiscountScreen = ({
   setEndHour,
   email,
   setEmail,
+  personel,
+  setPersonel,
+  student,
+  setStudent,
   minPayment,
   setMinPayment,
   finalDate,
@@ -217,6 +224,30 @@ const DiscountScreen = ({
               fullWidth
               variant="standard"
               multiline={false}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  margin="dense"
+                  checked={personel}
+                  onChange={(e) => setPersonel(e.target.checked)}
+                  fullWidth
+                  variant="standard"
+                />
+              }
+              label={"Hediye gönderen ve alanlar"}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  margin="dense"
+                  checked={student}
+                  onChange={(e) => setStudent(e.target.checked)}
+                  fullWidth
+                  variant="standard"
+                />
+              }
+              label={"Destek/Geri Bildirim gönderenler"}
             />
             <p>Lütfen bakiye yükleme alt baremi giriniz.</p>
             <TextField
@@ -796,6 +827,7 @@ const DiscountScreen = ({
             {isCoupon && "Kupon Ekle"}
             {isSurvey && "Anket Ekle"}
             {isLuck && "Şans Ekle"}
+            {isSupport && "Hediye Gönder"}
           </Button>
         </div>
       )}
