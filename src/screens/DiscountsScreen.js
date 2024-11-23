@@ -170,14 +170,14 @@ const DiscountsScreen = () => {
           personel: personel,
           student: student,
           min_payment: minPayment,
-          final_date: finalDate,
+          product_ids: productId,
         },
         type: discountType,
         min_limit: minLimit,
         percent: percent,
         amount: amount,
         end_date: endDate,
-        product_ids: productId,
+        final_date: finalDate,
       };
       const response = await axiosPrivate.post(
         APIS.add,
