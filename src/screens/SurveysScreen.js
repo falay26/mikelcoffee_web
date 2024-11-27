@@ -48,7 +48,7 @@ const SurveysScreen = () => {
   const [endDate, setEndDate] = useState("");
   const [productsLoading, setProductsLoading] = useState(false);
   const [products, setProducts] = useState([]);
-  const [productId, setProductId] = useState(null);
+  const [productId, setProductId] = useState([]);
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
