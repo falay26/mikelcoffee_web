@@ -235,7 +235,7 @@ const DiscountScreen = ({
                   variant="standard"
                 />
               }
-              label={"Hediye gönderen ve alanlar"}
+              label={"Sadece Personeller"}
             />
             <FormControlLabel
               control={
@@ -247,7 +247,7 @@ const DiscountScreen = ({
                   variant="standard"
                 />
               }
-              label={"Destek/Geri Bildirim gönderenler"}
+              label={"Sadece Öğrenciler"}
             />
             <p>Lütfen bakiye yükleme alt baremi giriniz.</p>
             <TextField
