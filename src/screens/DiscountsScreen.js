@@ -203,7 +203,7 @@ const DiscountsScreen = () => {
     setLoading(true);
     try {
       let parameters = {
-        discount_id: id,
+        sale_id: id,
       };
       const response = await axiosPrivate.post(
         APIS.delete,

@@ -159,7 +159,6 @@ const SurveysScreen = () => {
         product_id: productId,
         questions: questions,
       };
-      console.log(parameters); //TODO: check, you are here..
       const response = await axiosPrivate.post(
         APIS.add,
         JSON.stringify(parameters),
@@ -172,8 +171,29 @@ const SurveysScreen = () => {
         }
       );
       if (response.status === 200) {
-        setShown(false);
         fetchDatas();
+        setLoading(false);
+        setShown(false);
+        setCode("");
+        setUsageAmount("");
+        setUsageFrequency("");
+        setBranchId("");
+        setDayId("");
+        setStartHour("");
+        setEndHour("");
+        setEmail("");
+        setMinPayment("");
+        setDiscountIndex(null);
+        setDiscountUsers([]);
+        setFilters({});
+        setName("");
+        setDiscountType("");
+        setMinLimit("");
+        setPercent("");
+        setAmount("");
+        setEndDate("");
+        setProductId([]);
+        setQuestions([]);
       }
     } catch (err) {
       setLoading(false);
@@ -198,7 +218,9 @@ const SurveysScreen = () => {
           withCredentials: true,
         }
       );
+      setLoading(false);
       if (response.status === 200) {
+        setShown(false);
         fetchDatas();
       }
     } catch (err) {
