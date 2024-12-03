@@ -605,7 +605,7 @@ const DiscountScreen = ({
             <p>Lütfen kampanya ismi giriniz.</p>
             <TextField
               margin="none"
-              label={"İndirim ismi"}
+              label={"Kampanya ismi"}
               value={name}
               onChange={(e) => setName(e.target.value)}
               type="email"
