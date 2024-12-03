@@ -37,7 +37,7 @@ const Sidebar = ({ open, setOpen }) => {
       link: "products",
     },
     {
-      title: "Kampanyalar",
+      title: "Postlar",
       link: "campaigns",
     },
     {
@@ -77,7 +77,7 @@ const Sidebar = ({ open, setOpen }) => {
       link: "iys",
     },
     {
-      title: "İndirimler",
+      title: "Kampanyalar",
       link: "discounts",
     },
     {

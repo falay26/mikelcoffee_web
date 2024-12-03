@@ -38,7 +38,7 @@ const PageTitle = ({
       )}
       {campaign && (
         <Button onClick={onPress} color="primary" variant="text">
-          Kampanya Ekle
+          Post Ekle
         </Button>
       )}
       {giftcard && (
@@ -53,7 +53,7 @@ const PageTitle = ({
       )}
       {discount && (
         <Button onClick={onPress} color="primary" variant="text">
-          İndirim Ekle
+          Kampanya Ekle
         </Button>
       )}
       {coupon && (

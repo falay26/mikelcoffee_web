@@ -448,7 +448,7 @@ const CampaignsScreen = () => {
       ) : (
         <>
           <PageTitle
-            title={"Kampanyalar"}
+            title={"Postlar"}
             campaign={true}
             total={filteredData.length}
             onPress={() => {

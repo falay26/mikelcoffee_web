@@ -276,7 +276,7 @@ const DiscountsScreen = () => {
       ) : (
         <>
           <PageTitle
-            title={"İndirimler"}
+            title={"Kampanyalar"}
             total={total}
             discount={true}
             onPress={() => setShown(true)}
