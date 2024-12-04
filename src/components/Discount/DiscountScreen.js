@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -7,6 +7,16 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import StarterKit from "@tiptap/starter-kit";
+import {
+  MenuButtonBold,
+  MenuButtonItalic,
+  MenuControlsContainer,
+  MenuDivider,
+  MenuSelectHeading,
+  RichTextEditor,
+  RichTextEditorRef,
+} from "mui-tiptap";
 //Components
 import Loading from "../Loading";
 import Filters from "./Filters";
@@ -80,14 +90,19 @@ const DiscountScreen = ({
   setFilters,
   onDone,
 }) => {
+  const rteRef = useRef(null);
+
   const [question, setQuestion] = useState("");
   const [qIndex, setQIndex] = useState(0);
   const [type, setType] = useState("1");
   const [answers, setAnswers] = useState([]);
   const [answer, setAnswer] = useState("");
   const [aIndex, setAIndex] = useState(0);
+
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+
+  const [contentType, setContentType] = useState(null);
 
   useEffect(() => {
     if (index === 1 && discountType === "4") {
@@ -553,28 +568,63 @@ const DiscountScreen = ({
                     }}
                   />
                 </div>
-                <p>Lütfen başlık giriniz.</p>
-                <TextField
-                  margin="none"
-                  label={"İleti başlığı"}
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  type="email"
-                  fullWidth
-                  variant="standard"
-                  multiline={false}
-                />
-                <p>Lütfen içerik giriniz.</p>
-                <TextField
-                  margin="none"
-                  label={"İleti içeriği"}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  type="email"
-                  fullWidth
-                  variant="standard"
-                  multiline={false}
-                />
+                <p>Lütfen İleti türü seçiniz.</p>
+                <div className="discount_type_container">
+                  <Button
+                    onClick={() => setContentType("1")}
+                    color="primary"
+                    variant={contentType === "1" ? "outlined" : "text"}
+                  >
+                    Sms
+                  </Button>
+                  <Button
+                    onClick={() => setContentType("2")}
+                    color="primary"
+                    variant={contentType === "2" ? "outlined" : "text"}
+                  >
+                    Email
+                  </Button>
+                  <Button
+                    onClick={() => setContentType("3")}
+                    color="primary"
+                    variant={contentType === "3" ? "outlined" : "text"}
+                  >
+                    Bildirim
+                  </Button>
+                </div>
+                {contentType !== null && (
+                  <>
+                    {contentType !== "1" && (
+                      <>
+                        <p>Lütfen başlık giriniz.</p>
+                        <TextField
+                          margin="none"
+                          label={"İleti başlığı"}
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                          type="email"
+                          fullWidth
+                          variant="standard"
+                          multiline={false}
+                        />
+                      </>
+                    )}
+                    <p>Lütfen içerik giriniz.</p>
+                    <RichTextEditor
+                      ref={rteRef}
+                      extensions={[StarterKit]}
+                      content="<p>Hello world</p>"
+                      renderControls={() => (
+                        <MenuControlsContainer>
+                          <MenuSelectHeading />
+                          <MenuDivider />
+                          <MenuButtonBold />
+                          <MenuButtonItalic />
+                        </MenuControlsContainer>
+                      )}
+                    />
+                  </>
+                )}
               </div>
               <Button
                 onClick={() => {
