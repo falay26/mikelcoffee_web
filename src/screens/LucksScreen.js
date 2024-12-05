@@ -46,6 +46,7 @@ const LucksScreen = () => {
   const [discountUsers, setDiscountUsers] = useState([]);
 
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [chance, setChance] = useState("");
   const [discountType, setDiscountType] = useState("");
   const [minLimit, setMinLimit] = useState("");
@@ -399,6 +400,8 @@ const LucksScreen = () => {
           setIndex={setDiscountIndex}
           name={name}
           setName={setName}
+          description={description}
+          setDescription={setDescription}
           chance={chance}
           setChance={setChance}
           discountType={discountType}

@@ -28,6 +28,7 @@ const SupportsScreen = () => {
   const [discountUsers, setDiscountUsers] = useState([]);
 
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [discountType, setDiscountType] = useState("");
   const [minLimit, setMinLimit] = useState("");
   const [percent, setPercent] = useState("");
@@ -201,6 +202,7 @@ const SupportsScreen = () => {
         user_id: discountUsers,
         luck: {
           name: name,
+          description: description,
           type: discountType,
           min_limit: minLimit,
           percent: percent,
@@ -247,6 +249,8 @@ const SupportsScreen = () => {
           setIndex={setDiscountIndex}
           name={name}
           setName={setName}
+          description={description}
+          setDescription={setDescription}
           discountType={discountType}
           setDiscountType={setDiscountType}
           minLimit={minLimit}

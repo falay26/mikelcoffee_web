@@ -42,6 +42,7 @@ const CouponsScreen = () => {
   const [finalDate, setFinalDate] = useState("");
 
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [discountType, setDiscountType] = useState("");
   const [minLimit, setMinLimit] = useState("");
   const [percent, setPercent] = useState("");
@@ -253,6 +254,8 @@ const CouponsScreen = () => {
           setIndex={setDiscountIndex}
           name={name}
           setName={setName}
+          description={description}
+          setDescription={setDescription}
           discountType={discountType}
           setDiscountType={setDiscountType}
           minLimit={minLimit}

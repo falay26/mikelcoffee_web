@@ -15,7 +15,6 @@ import {
   MenuDivider,
   MenuSelectHeading,
   RichTextEditor,
-  RichTextEditorRef,
 } from "mui-tiptap";
 //Components
 import Loading from "../Loading";
@@ -68,6 +67,8 @@ const DiscountScreen = ({
   setIndex,
   name,
   setName,
+  description,
+  setDescription,
   chance,
   setChance,
   discountType,
@@ -91,6 +92,7 @@ const DiscountScreen = ({
   onDone,
 }) => {
   const rteRef = useRef(null);
+  const rteRef1 = useRef(null);
 
   const [question, setQuestion] = useState("");
   const [qIndex, setQIndex] = useState(0);
@@ -613,7 +615,7 @@ const DiscountScreen = ({
                     <RichTextEditor
                       ref={rteRef}
                       extensions={[StarterKit]}
-                      content="<p>Hello world</p>"
+                      content=""
                       renderControls={() => (
                         <MenuControlsContainer>
                           <MenuSelectHeading />
@@ -628,6 +630,7 @@ const DiscountScreen = ({
               </div>
               <Button
                 onClick={() => {
+                  console.log(rteRef.current?.editor?.getHTML());
                   console.log(title, message);
                 }}
                 color="primary"
@@ -662,6 +665,20 @@ const DiscountScreen = ({
               fullWidth
               variant="standard"
               multiline={false}
+            />
+            <p>Lütfen kampanya kullanım koşulları giriniz.</p>
+            <RichTextEditor
+              ref={rteRef1}
+              extensions={[StarterKit]}
+              content="<p>Hello world</p>"
+              renderControls={() => (
+                <MenuControlsContainer>
+                  <MenuSelectHeading />
+                  <MenuDivider />
+                  <MenuButtonBold />
+                  <MenuButtonItalic />
+                </MenuControlsContainer>
+              )}
             />
             {isLuck && (
               <>
@@ -715,6 +732,7 @@ const DiscountScreen = ({
               if (discountType === "") {
                 alert("Lütfen seçim yapınız.");
               } else {
+                setDescription(rteRef1.current?.editor?.getHTML());
                 setIndex(1);
               }
             }}
