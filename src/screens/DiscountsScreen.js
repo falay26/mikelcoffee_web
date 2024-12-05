@@ -162,6 +162,7 @@ const DiscountsScreen = () => {
     try {
       let parameters = {
         name: name,
+        description: description,
         filters: {
           branch_ids: branchId,
           day_id: dayId,

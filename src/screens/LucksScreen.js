@@ -208,6 +208,7 @@ const LucksScreen = () => {
     try {
       let parameters = {
         name: name,
+        description: description,
         chance: chance,
         filters: {
           branch_id: branchId,

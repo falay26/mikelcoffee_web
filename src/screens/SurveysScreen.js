@@ -151,6 +151,7 @@ const SurveysScreen = () => {
     try {
       let parameters = {
         name: name,
+        description: description,
         filters: filters,
         type: discountType,
         min_limit: minLimit,

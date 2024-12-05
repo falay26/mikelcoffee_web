@@ -162,6 +162,7 @@ const CouponsScreen = () => {
     try {
       let parameters = {
         name: name,
+        description: description,
         code: code,
         usage_amount: usageAmount,
         usage_frequency: usageFrequency,
