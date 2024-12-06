@@ -158,7 +158,7 @@ const SurveysScreen = () => {
         percent: percent,
         amount: amount,
         end_date: endDate,
-        product_id: productId,
+        product_ids: productId,
         questions: questions,
       };
       const response = await axiosPrivate.post(
