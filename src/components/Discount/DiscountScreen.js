@@ -670,7 +670,7 @@ const DiscountScreen = ({
             <RichTextEditor
               ref={rteRef1}
               extensions={[StarterKit]}
-              content="<p>Hello world</p>"
+              content=""
               renderControls={() => (
                 <MenuControlsContainer>
                   <MenuSelectHeading />
