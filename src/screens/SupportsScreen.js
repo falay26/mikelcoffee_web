@@ -36,7 +36,7 @@ const SupportsScreen = () => {
   const [endDate, setEndDate] = useState("");
   const [productsLoading, setProductsLoading] = useState(false);
   const [products, setProducts] = useState([]);
-  const [productId, setProductId] = useState("");
+  const [productId, setProductId] = useState([]);
 
   const values = [
     {
@@ -112,7 +112,7 @@ const SupportsScreen = () => {
         setAmount("");
         setEndDate("");
         setProducts([]);
-        setProductId("");
+        setProductId([]);
         setDiscountIndex(0);
         setDiscountUsers(data.user_info[0]._id);
       },
