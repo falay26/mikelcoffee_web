@@ -139,7 +139,7 @@ const PanelScreen = () => {
     try {
       let parameters = {
         user_id: selectedUser._id,
-        personel: selectedUser.personel === true ? false : true,
+        personel: selectedUser.is_personel === true ? false : true,
       };
       const response = await axiosPrivate.post(
         APIS.change,

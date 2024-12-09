@@ -27,7 +27,7 @@ const days = [
   { name: "Perşembe", _id: 4 },
   { name: "Cuma", _id: 5 },
   { name: "Cumartesi", _id: 6 },
-  { name: "Pazar", _id: 7 },
+  { name: "Pazar", _id: 0 },
 ];
 
 const DiscountScreen = ({
