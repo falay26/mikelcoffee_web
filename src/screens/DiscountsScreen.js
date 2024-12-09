@@ -193,6 +193,8 @@ const DiscountsScreen = () => {
         }
       );
       if (response.status === 200) {
+        setShown(false);
+        setDiscountIndex(null);
         fetchDatas();
       }
     } catch (err) {
