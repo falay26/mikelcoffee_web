@@ -223,7 +223,7 @@ const LucksScreen = () => {
         percent: percent,
         amount: amount,
         end_date: endDate,
-        product_id: productId,
+        product_ids: productId,
       };
       const response = await axiosPrivate.post(
         APIS.add,
