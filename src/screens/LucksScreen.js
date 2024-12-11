@@ -242,7 +242,7 @@ const LucksScreen = () => {
       }
     } catch (err) {
       setLoading(false);
-      alert("Bir sorun oluştu, lütfen tekrar deneyiniz.");
+      alert("Bir sorun oluştu, lütfen tekrar deneyiniz!");
     }
   };
 
