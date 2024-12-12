@@ -204,45 +204,49 @@ const LucksScreen = () => {
   };
 
   const handleDone = async () => {
-    setLoading(true);
-    try {
-      let parameters = {
-        name: name,
-        description: description,
-        chance: chance,
-        filters: {
-          branch_id: branchId,
-          day_id: dayId,
-          start_hour: startHour,
-          end_hour: endHour,
-          email: email,
-          min_payment: minPayment,
-        },
-        type: discountType,
-        min_limit: minLimit,
-        percent: percent,
-        amount: amount,
-        end_date: endDate,
-        product_ids: productId,
-      };
-      const response = await axiosPrivate.post(
-        APIS.add,
-        JSON.stringify(parameters),
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+    if (chance === "") {
+      alert("Lütfen Oran bilgisi giriniz.");
+    } else {
+      setLoading(true);
+      try {
+        let parameters = {
+          name: name,
+          description: description,
+          chance: chance,
+          filters: {
+            branch_id: branchId,
+            day_id: dayId,
+            start_hour: startHour,
+            end_hour: endHour,
+            email: email,
+            min_payment: minPayment,
           },
-          withCredentials: true,
+          type: discountType,
+          min_limit: minLimit,
+          percent: percent,
+          amount: amount,
+          end_date: endDate,
+          product_ids: productId,
+        };
+        const response = await axiosPrivate.post(
+          APIS.add,
+          JSON.stringify(parameters),
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
+        if (response.status === 200) {
+          setShown(false);
+          fetchDatas();
         }
-      );
-      if (response.status === 200) {
-        setShown(false);
-        fetchDatas();
+      } catch (err) {
+        setLoading(false);
+        alert("Bir sorun oluştu, lütfen tekrar deneyiniz!");
       }
-    } catch (err) {
-      setLoading(false);
-      alert("Bir sorun oluştu, lütfen tekrar deneyiniz!");
     }
   };
 
