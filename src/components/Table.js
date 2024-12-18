@@ -218,19 +218,27 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
       return <td>Bilgi Yok</td>;
     }
   } else if (value.is_check_price) {
-    return <td>{JSON.parse(data[value.value]).summary.unpaid_amount} TL</td>;
+    return <td>{JSON?.parse(data[value.value]).summary.unpaid_amount} TL</td>;
   } else if (value.is_check_date) {
-    return <td>{JSON.parse(data[value.value]).business_date}</td>;
+    return <td>{JSON?.parse(data[value.value]).business_date}</td>;
   } else if (value.is_payment_type) {
     let result = "";
     if (data[value.value] === "cash") {
       result = "Nakit";
-    }
-    if (data[value.value] === "coffee_point") {
-      result = "Sadakat Puanı";
-    }
-    if (data[value.value] === "mcoin") {
+    } else if (data[value.value] === "coffee_point") {
+      result = "Mikel Cup";
+    } else if (data[value.value] === "mcoin") {
       result = "Mikel Coin";
+    } else if (data[value.value] === "birthday") {
+      result = "DG İçeceği";
+    } else if (data[value.value] === "campaign") {
+      result = "Kampanya";
+    } else if (data[value.value] === "coupon") {
+      result = "Kupon";
+    } else if (data[value.value] === "balance") {
+      result = "Bakiye Yüklemesi";
+    } else {
+      result = "Bilinmiyor";
     }
     return <td>{result}</td>;
   } else if (value.is_gift) {
