@@ -537,8 +537,11 @@ const DiscountScreen = ({
                 <Button
                   fullWidth
                   onClick={() => {
-                    console.log(questions);
-                    setIndex(0);
+                    if (questions.length === 0) {
+                      alert("Lütfen en az 1 soru ekleyiniz.");
+                    } else {
+                      setIndex(0);
+                    }
                   }}
                   color="primary"
                   variant="contained"
