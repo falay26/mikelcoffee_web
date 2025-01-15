@@ -35,6 +35,7 @@ const StoriesScreen = () => {
   const [subtitle, setSubtitle] = useState("");
   const [campaign, setCampaign] = useState("");
   const [branch, setBranch] = useState("");
+  const [days, setDays] = useState("");
 
   useEffect(() => {
     fetchDatas();
@@ -120,6 +121,7 @@ const StoriesScreen = () => {
         subtitle: subtitle,
         campaign_id: campaign,
         branch_id: branch,
+        days: days,
       };
       const response = await axiosPrivate.post(
         APIS.add,
@@ -242,7 +244,7 @@ const StoriesScreen = () => {
       state: campaign,
       setState: setCampaign,
       options: options,
-      option_title: "title",
+      option_title: "title.tr",
     },
     {
       title: "Şube",
@@ -253,6 +255,14 @@ const StoriesScreen = () => {
       setState: setBranch,
       options: options1,
       option_title: "name",
+    },
+    {
+      title: "Süre (Gün)",
+      not_visible: true,
+      value: "end_date",
+      type: "textinput",
+      state: days,
+      setState: setDays,
     },
     {
       title: "Düzenle/Sil",

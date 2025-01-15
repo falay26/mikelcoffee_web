@@ -159,6 +159,7 @@ const SurveysScreen = () => {
         amount: amount,
         end_date: endDate,
         product_ids: productId,
+        max_mikel_time: endDate,
         questions: questions,
       };
       const response = await axiosPrivate.post(

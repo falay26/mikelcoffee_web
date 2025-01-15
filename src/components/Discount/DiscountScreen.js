@@ -88,7 +88,11 @@ const DiscountScreen = ({
   onProductsSelected,
   questions,
   setQuestions,
+  maxMikelTime,
+  setMaxMikelTime,
   setFilters,
+  emptyLuck,
+  setEmptyLuck,
   onDone,
 }) => {
   const rteRef = useRef(null);
@@ -507,7 +511,7 @@ const DiscountScreen = ({
                           color="primary"
                           variant="contained"
                         >
-                          Başka cevap ekle
+                          Cevap ekle
                         </Button>
                       </div>
                     </>
@@ -518,7 +522,10 @@ const DiscountScreen = ({
                 <Button
                   fullWidth
                   onClick={() => {
-                    if (question !== "") {
+                    if (
+                      question !== "" &&
+                      (type !== "2" || answers.length !== 0)
+                    ) {
                       setQuestions((prev) =>
                         prev.concat([{ question: question, answers: answers }])
                       );
@@ -532,7 +539,7 @@ const DiscountScreen = ({
                   color="primary"
                   variant="contained"
                 >
-                  Başka soru ekle
+                  Soru ekle
                 </Button>
                 <Button
                   fullWidth
@@ -658,6 +665,20 @@ const DiscountScreen = ({
                 }}
               />
             </div>
+            {isLuck && (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    margin="dense"
+                    checked={emptyLuck}
+                    onChange={(e) => setEmptyLuck(e.target.checked)}
+                    fullWidth
+                    variant="standard"
+                  />
+                }
+                label={"Boş Ödül"}
+              />
+            )}
             <p>Lütfen kampanya ismi giriniz.</p>
             <TextField
               margin="none"
@@ -719,7 +740,7 @@ const DiscountScreen = ({
                 color="primary"
                 variant={discountType === "3" ? "outlined" : "text"}
               >
-                MCup
+                Mikel Cup
               </Button>
               <Button
                 onClick={() => setDiscountType("4")}
@@ -735,8 +756,20 @@ const DiscountScreen = ({
               if (discountType === "") {
                 alert("Lütfen seçim yapınız.");
               } else {
-                setDescription(rteRef1.current?.editor?.getHTML());
-                setIndex(1);
+                if (isLuck && emptyLuck) {
+                  if (chance === "") {
+                    alert("Lütfen Oran bilgisi giriniz.");
+                  } else {
+                    onDone();
+                  }
+                } else {
+                  if (isLuck && chance === "") {
+                    alert("Lütfen Oran bilgisi giriniz.");
+                  } else {
+                    setDescription(rteRef1.current?.editor?.getHTML());
+                    setIndex(1);
+                  }
+                }
               }
             }}
             color="primary"
@@ -815,7 +848,7 @@ const DiscountScreen = ({
                 <p>Lütfen hediye tutarı giriniz.</p>
                 <TextField
                   margin="none"
-                  label={"Miktar (Mcup)"}
+                  label={"Miktar (Mikel Cup)"}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   type="number"
@@ -823,12 +856,12 @@ const DiscountScreen = ({
                   variant="standard"
                   multiline={false}
                 />
-                <p>Lütfen Mcup geçerlilik süresi giriniz.</p>
+                <p>Lütfen Mikel Cup geçerlilik süresi giriniz.</p>
                 <TextField
                   margin="none"
                   label={"Süre (Gün)"}
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  value={maxMikelTime}
+                  onChange={(e) => setMaxMikelTime(e.target.value)}
                   type="number"
                   fullWidth
                   variant="standard"

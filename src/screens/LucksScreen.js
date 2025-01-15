@@ -56,6 +56,7 @@ const LucksScreen = () => {
   const [productsLoading, setProductsLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [productId, setProductId] = useState([]);
+  const [emptyLuck, setEmptyLuck] = useState(false);
   //Lucks
   const [settingsOpen, setSettingOpen] = useState(true);
   const [luckType, setLuckType] = useState("0");
@@ -169,6 +170,8 @@ const LucksScreen = () => {
       title: "Ad",
       value: "name",
       type: "textinput",
+      condition: "empty",
+      is_luck: true,
     },
     {
       title: "Sil",
@@ -204,49 +207,46 @@ const LucksScreen = () => {
   };
 
   const handleDone = async () => {
-    if (chance === "") {
-      alert("Lütfen Oran bilgisi giriniz.");
-    } else {
-      setLoading(true);
-      try {
-        let parameters = {
-          name: name,
-          description: description,
-          chance: chance,
-          filters: {
-            branch_id: branchId,
-            day_id: dayId,
-            start_hour: startHour,
-            end_hour: endHour,
-            email: email,
-            min_payment: minPayment,
+    setLoading(true);
+    try {
+      let parameters = {
+        name: name,
+        description: description,
+        chance: chance,
+        filters: {
+          branch_id: branchId,
+          day_id: dayId,
+          start_hour: startHour,
+          end_hour: endHour,
+          email: email,
+          min_payment: minPayment,
+        },
+        type: discountType,
+        min_limit: minLimit,
+        percent: percent,
+        amount: amount,
+        end_date: endDate,
+        product_ids: productId,
+        empty: emptyLuck,
+      };
+      const response = await axiosPrivate.post(
+        APIS.add,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
-          type: discountType,
-          min_limit: minLimit,
-          percent: percent,
-          amount: amount,
-          end_date: endDate,
-          product_ids: productId,
-        };
-        const response = await axiosPrivate.post(
-          APIS.add,
-          JSON.stringify(parameters),
-          {
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            withCredentials: true,
-          }
-        );
-        if (response.status === 200) {
-          setShown(false);
-          fetchDatas();
+          withCredentials: true,
         }
-      } catch (err) {
-        setLoading(false);
-        alert("Bir sorun oluştu, lütfen tekrar deneyiniz!");
+      );
+      if (response.status === 200) {
+        setShown(false);
+        fetchDatas();
       }
+    } catch (err) {
+      setLoading(false);
+      alert("Bir sorun oluştu, lütfen tekrar deneyiniz!");
     }
   };
 
@@ -424,6 +424,8 @@ const LucksScreen = () => {
           productId={productId}
           setProductId={setProductId}
           onProductsSelected={getProducts}
+          emptyLuck={emptyLuck}
+          setEmptyLuck={setEmptyLuck}
           onDone={handleDone}
         />
       ) : (

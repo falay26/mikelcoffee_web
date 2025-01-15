@@ -172,6 +172,7 @@ const CouponsScreen = () => {
         percent: percent,
         amount: amount,
         end_date: endDate,
+        max_mikel_time: endDate,
         product_ids: productId,
         final_date: finalDate,
       };

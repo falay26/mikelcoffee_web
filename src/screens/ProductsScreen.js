@@ -532,7 +532,7 @@ const ProductsScreen = () => {
         { id: 4, title: "20oz" },
       ],
       option_title: "title",
-      condition: category === "0",
+      condition: category === "0" || category === "1",
     },
     {
       title: "Getir Ve Yemeksepeti Linkleri",

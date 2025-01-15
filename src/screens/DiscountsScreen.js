@@ -180,6 +180,7 @@ const DiscountsScreen = () => {
         amount: amount,
         end_date: endDate,
         final_date: finalDate,
+        max_mikel_time: endDate,
       };
       const response = await axiosPrivate.post(
         APIS.add,

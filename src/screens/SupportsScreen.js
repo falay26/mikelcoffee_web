@@ -37,6 +37,7 @@ const SupportsScreen = () => {
   const [productsLoading, setProductsLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [productId, setProductId] = useState([]);
+  const [supportId, setSupportId] = useState([]);
 
   const values = [
     {
@@ -103,7 +104,7 @@ const SupportsScreen = () => {
     },
     {
       title: "Hediye",
-      value: "",
+      value: "gift_name",
       is_gift: true,
       onPress: (data) => {
         setDiscountType("");
@@ -115,6 +116,7 @@ const SupportsScreen = () => {
         setProductId([]);
         setDiscountIndex(0);
         setDiscountUsers(data.user_info[0]._id);
+        setSupportId(data._id);
       },
     },
   ];
@@ -208,9 +210,11 @@ const SupportsScreen = () => {
           percent: percent,
           amount: amount,
           end_date: endDate,
+          max_mikel_time: endDate,
           product_ids: productId,
         },
         from_admin: true,
+        support_id: supportId,
       };
       const response = await axiosPrivate.post(
         APIS.add_luck,
@@ -225,9 +229,31 @@ const SupportsScreen = () => {
       );
       if (response.status === 200) {
         setDiscountIndex(null);
+        setLoading(true);
+        try {
+          let parameters = {};
+          const response = await axiosPrivate.post(
+            APIS.get,
+            JSON.stringify(parameters),
+            {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              withCredentials: true,
+            }
+          );
+          setLoading(false);
+          if (response.status === 200) {
+            setData(response.data.data);
+          }
+        } catch (err) {
+          //alert(err);
+          setLoading(false);
+          // TODO: Errorhandling..
+        }
       }
     } catch (err) {
-      console.log(err);
       setLoading(false);
       alert("Bir sorun oluştu, lütfen tekrar deneyiniz.");
     }

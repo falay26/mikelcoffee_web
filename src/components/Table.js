@@ -242,17 +242,21 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
     }
     return <td>{result}</td>;
   } else if (value.is_gift) {
-    return (
-      <td>
-        <Button
-          onClick={() => value.onPress(data)}
-          color="primary"
-          variant="outlined"
-        >
-          {"Hediye Gönder"}
-        </Button>
-      </td>
-    );
+    if (data[value.value] === undefined || data[value.value] === "") {
+      return (
+        <td>
+          <Button
+            onClick={() => value.onPress(data)}
+            color="primary"
+            variant="outlined"
+          >
+            {"Hediye Gönder"}
+          </Button>
+        </td>
+      );
+    } else {
+      return <td>{data[value.value]}</td>;
+    }
   } else if (value.is_personel) {
     if (data[value.value]) {
       return (
@@ -288,7 +292,7 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
         return "TL";
       }
       if (id === "3") {
-        return "Mcup";
+        return "Mikel Cup";
       }
       if (id === "4") {
         return "Ürün";
@@ -298,6 +302,12 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
     return <td>{formatted_subject}</td>;
   } else if (value.is_discount_users) {
     return <td>{data[value.value].length}</td>;
+  } else if (value.is_luck) {
+    if (data[value.condition]) {
+      return <td>Boş Ödül</td>;
+    } else {
+      return <td>{data[value.value]}</td>;
+    }
   } else {
     return (
       <td>

@@ -55,24 +55,6 @@ const FranchisesScreen = () => {
       value: "details",
     },
     {
-      title: "Miktar",
-      value: "expense_id",
-      is_expense: true,
-      filter: {
-        title: "Miktar",
-        state: expenseFilter,
-        setState: setExpenseFilter,
-        type: "choiceinput",
-        options: [
-          { _id: "", name: "Hepsi" },
-          { _id: "0", name: "6.000.000 TL" },
-          { _id: "1", name: "10.000.000 TL" },
-          { _id: "2", name: "10.000.000 TL üstü" },
-        ],
-        option_title: "name",
-      },
-    },
-    {
       title: "Mesaj",
       value: "message",
     },
@@ -96,6 +78,7 @@ const FranchisesScreen = () => {
         );
         setLoading(false);
         if (response.status === 200) {
+          console.log(response.data.data);
           setData(response.data.data);
         }
       } catch (err) {
