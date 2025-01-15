@@ -215,6 +215,7 @@ const SupportsScreen = () => {
         },
         from_admin: true,
         support_id: supportId,
+        max_mikel_time: endDate,
       };
       const response = await axiosPrivate.post(
         APIS.add_luck,
