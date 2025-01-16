@@ -860,8 +860,8 @@ const DiscountScreen = ({
                 <TextField
                   margin="none"
                   label={"Süre (Gün)"}
-                  value={maxMikelTime}
-                  onChange={(e) => setMaxMikelTime(e.target.value)}
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
                   type="number"
                   fullWidth
                   variant="standard"
