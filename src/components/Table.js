@@ -228,7 +228,7 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
     } else if (data[value.value] === "coffee_point") {
       result = "Mikel Cup";
     } else if (data[value.value] === "mcoin") {
-      result = "Mikel Coin";
+      result = "Mikel Cup";
     } else if (data[value.value] === "birthday") {
       result = "DG İçeceği";
     } else if (data[value.value] === "campaign") {
@@ -237,6 +237,8 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
       result = "Kupon";
     } else if (data[value.value] === "balance") {
       result = "Bakiye Yüklemesi";
+    } else if (data[value.value] === "register") {
+      result = "Kasadan";
     } else {
       result = "Bilinmiyor";
     }
