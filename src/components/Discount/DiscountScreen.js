@@ -287,7 +287,7 @@ const DiscountScreen = ({
               label={"Bitiş Tarihi (YYYY-MM-DD)"}
               value={finalDate}
               onChange={(e) => setFinalDate(e.target.value)}
-              type="number"
+              type="email"
               fullWidth
               variant="standard"
               multiline={false}
@@ -388,7 +388,7 @@ const DiscountScreen = ({
               label={"Bitiş Tarihi (YYYY-MM-DD)"}
               value={finalDate}
               onChange={(e) => setFinalDate(e.target.value)}
-              type="number"
+              type="email"
               fullWidth
               variant="standard"
               multiline={false}

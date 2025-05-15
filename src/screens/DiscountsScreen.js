@@ -182,6 +182,8 @@ const DiscountsScreen = () => {
         final_date: finalDate,
         max_mikel_time: endDate,
       };
+      console.log(parameters);
+      /*
       const response = await axiosPrivate.post(
         APIS.add,
         JSON.stringify(parameters),
@@ -198,6 +200,7 @@ const DiscountsScreen = () => {
         setDiscountIndex(null);
         fetchDatas();
       }
+      */
     } catch (err) {
       setLoading(false);
       alert("Bir sorun oluştu, lütfen tekrar deneyiniz.");
