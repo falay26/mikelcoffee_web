@@ -28,7 +28,6 @@ const DataConverter = (data, values) => {
 
 const ExcelExporter = (data, values) => {
   let new_datas = DataConverter(data, values);
-  /*
   const ws = XLSX.utils.json_to_sheet([]);
 
   const now = new Date();
@@ -92,7 +91,6 @@ const ExcelExporter = (data, values) => {
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
   XLSX.writeFile(wb, fileName, { cellStyles: true });
-  */
 };
 
 export default ExcelExporter;
