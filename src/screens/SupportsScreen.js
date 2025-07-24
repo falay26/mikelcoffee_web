@@ -19,6 +19,7 @@ const SupportsScreen = () => {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   //Filters
   const [filteredData, setFilteredData] = useState([]);
   const [branchFilter, setBranchFilter] = useState("");
@@ -44,11 +45,13 @@ const SupportsScreen = () => {
       title: "Tarih",
       value: "created_at",
       is_birth: true,
+      doe_type: "is_birth",
     },
     {
       title: "Şube",
       value: "branch_id",
       is_branch: true,
+      doe_type: "is_branch",
       filter: {
         title: "Şube İsmi",
         state: branchFilter,
@@ -62,6 +65,7 @@ const SupportsScreen = () => {
       type: "textinput",
       user_title: "name",
       is_user: true,
+      doe_type: "is_user",
     },
     {
       title: "Soyad",
@@ -69,6 +73,7 @@ const SupportsScreen = () => {
       type: "textinput",
       user_title: "surname",
       is_user: true,
+      doe_type: "is_user",
     },
     {
       title: "Telefon",
@@ -76,11 +81,13 @@ const SupportsScreen = () => {
       type: "textinput",
       user_title: "phone",
       is_user: true,
+      doe_type: "is_user",
     },
     {
       title: "Konu",
       value: "subject_id",
       is_subject: true,
+      doe_type: "is_subject",
       filter: {
         title: "Konu",
         state: subjectFilter,
@@ -260,13 +267,19 @@ const SupportsScreen = () => {
   };
 
   return (
-    <PanelContainer>
+    <PanelContainer data={filteredData} values={values} page_id="destekler">
       {loading ? (
         <Loading />
       ) : discountIndex === null ? (
         <>
           <PageTitle title={"Destekler"} total={filteredData.length} />
-          <Table values={values} data={filteredData} loading={false} />
+          <Table
+            values={values}
+            data={filteredData}
+            loading={false}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </>
       ) : (
         <DiscountScreen

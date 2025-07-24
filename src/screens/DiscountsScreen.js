@@ -25,6 +25,7 @@ const DiscountsScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   //Discounts
   const [shown, setShown] = useState(false);
   const [branches, setBranches] = useState([]);
@@ -117,16 +118,25 @@ const DiscountsScreen = () => {
       value: "type",
       type: "textinput",
       is_discount_type: true,
+      doe_type: "is_discount_type",
     },
     {
       title: "Kullanıcı",
       value: "users",
       type: "textinput",
       is_discount_users: true,
+      doe_type: "is_discount_users",
+    },
+    {
+      title: "Tarih",
+      value: "created_at",
+      is_birth: true,
+      doe_type: "is_birth",
     },
     {
       title: "Sil",
       value: null,
+      doe_type: "not_visible",
       is_delete: true,
     },
   ];
@@ -231,7 +241,7 @@ const DiscountsScreen = () => {
   };
 
   return (
-    <PanelContainer>
+    <PanelContainer data={data} values={values} page_id="kampanyalar">
       {loading ? (
         <Loading />
       ) : shown ? (
@@ -294,6 +304,8 @@ const DiscountsScreen = () => {
             loading={false}
             onDelete={() => deleteHandler()}
             setId={setId}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </>
       )}

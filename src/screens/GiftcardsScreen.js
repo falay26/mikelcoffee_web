@@ -24,6 +24,7 @@ const GiftcardsScreen = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [id, setId] = useState();
 
@@ -196,6 +197,7 @@ const GiftcardsScreen = () => {
       title: "Başlık (İngilizce)",
       value: "title.en",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: titleEN,
       setState: setTitleEN,
@@ -204,6 +206,7 @@ const GiftcardsScreen = () => {
       title: "Başlık (Yunanca)",
       value: "title.gr",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: titleGR,
       setState: setTitleGR,
@@ -212,6 +215,7 @@ const GiftcardsScreen = () => {
       title: "Başlık (Arapça)",
       value: "title.ar",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: titleAR,
       setState: setTitleAR,
@@ -226,6 +230,7 @@ const GiftcardsScreen = () => {
     {
       title: "Alt Başlık (İngilizce)",
       value: "sub_title.en",
+      doe_type: "not_visible",
       not_visible: true,
       type: "textinput",
       state: subtitleEN,
@@ -234,6 +239,7 @@ const GiftcardsScreen = () => {
     {
       title: "Alt Başlık (Yunanca)",
       value: "sub_title.gr",
+      doe_type: "not_visible",
       not_visible: true,
       type: "textinput",
       state: subtitleGR,
@@ -242,6 +248,7 @@ const GiftcardsScreen = () => {
     {
       title: "Alt Başlık (Arapça)",
       value: "sub_title.ar",
+      doe_type: "not_visible",
       not_visible: true,
       type: "textinput",
       state: subtitleAR,
@@ -250,12 +257,13 @@ const GiftcardsScreen = () => {
     {
       title: "Düzenle/Sil",
       value: null,
+      doe_type: "not_visible",
       is_edit: true,
     },
   ];
 
   return (
-    <PanelContainer>
+    <PanelContainer data={data} values={values} page_id="hediye kartları">
       {loading ? (
         <Loading />
       ) : editOpen ? (
@@ -291,6 +299,8 @@ const GiftcardsScreen = () => {
             }}
             onDelete={deleteHandler}
             setId={setId}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </>
       )}

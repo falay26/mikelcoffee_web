@@ -21,6 +21,7 @@ const IysScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   //Discounts
   const [shown, setShown] = useState(false);
   const [branches, setBranches] = useState([]);
@@ -115,43 +116,20 @@ const IysScreen = () => {
 
   const values = [
     {
-      title: "Ad",
+      title: "Tür",
       value: "user_info",
-      type: "textinput",
-      user_title: "name",
-      is_user: true,
     },
     {
-      title: "Soyad",
+      title: "Başlık",
       value: "user_info",
-      type: "textinput",
-      user_title: "surname",
-      is_user: true,
     },
     {
-      title: "Email",
+      title: "İçerik",
       value: "user_info",
-      type: "textinput",
-      user_title: "email",
-      is_user: true,
     },
     {
-      title: "Miktar",
+      title: "Tarih",
       value: "check",
-      type: "textinput",
-      is_check_price: true,
-    },
-    {
-      title: "Zaman",
-      value: "check",
-      type: "textinput",
-      is_check_date: true,
-    },
-    {
-      title: "Ödeme Türü",
-      value: "paid_with",
-      type: "textinput",
-      is_payment_type: true,
     },
   ];
 
@@ -182,7 +160,7 @@ const IysScreen = () => {
   };
 
   return (
-    <PanelContainer>
+    <PanelContainer data={data} values={values} page_id="ileti yonetim">
       {loading ? (
         <Loading />
       ) : shown ? (
@@ -199,7 +177,13 @@ const IysScreen = () => {
             iys={true}
             onPress={() => setShown(true)}
           />
-          <Table values={values} data={data} loading={false} />
+          <Table
+            values={values}
+            data={data}
+            loading={false}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </>
       )}
     </PanelContainer>

@@ -10,30 +10,16 @@ import Button from "@mui/material/Button";
 //Components
 import Pagination from "./Pagination";
 import DeleteModal from "./Modals/DeleteModal";
+//Helpers
+import DataFormatter from "../helpers/DataFormatter";
 
 const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
   if (value.is_phone) {
-    let formatted_phone_number =
-      "+90 " +
-      data[value.value].substring(0, 3) +
-      " " +
-      data[value.value].substring(3, 6) +
-      " " +
-      data[value.value].substring(6, 8) +
-      " " +
-      data[value.value].substring(8, 10);
-    return <td>{formatted_phone_number}</td>;
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_birth) {
-    let formatted_date = data[value.value]?.split("T")[0];
-    return <td>{formatted_date}</td>;
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_gender) {
-    let formatted_gender =
-      data[value.value] === "0"
-        ? "Bilinmiyor"
-        : data[value.value] === "1"
-        ? "Kadın"
-        : "Erkek";
-    return <td>{formatted_gender}</td>;
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_image) {
     return (
       <td>
@@ -46,31 +32,7 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
       </td>
     );
   } else if (value.is_category) {
-    const category_returner = (id) => {
-      if (id === "1") {
-        return "Kahve";
-      }
-      if (id === "2") {
-        return "İçecekler";
-      }
-      if (id === "3") {
-        return "Atıştırmalıklar";
-      }
-      if (id === "4") {
-        return "Tatlılar & Dondurma";
-      }
-      if (id === "5") {
-        return "Fırın";
-      }
-      if (id === "6") {
-        return "Barista";
-      }
-      if (id === "7") {
-        return "Parekende";
-      }
-    };
-    let formatted_category = category_returner(data[value.value]);
-    return <td>{formatted_category}</td>;
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_edit) {
     return (
       <td>
@@ -108,6 +70,18 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
             setOpen(true);
           }}
         />
+      </td>
+    );
+  } else if (value.is_show_lucks) {
+    return (
+      <td>
+        <Button
+          onClick={() => value.onPress(data)}
+          color="primary"
+          variant="outlined"
+        >
+          {"Ödülleri Gör"}
+        </Button>
       </td>
     );
   } else if (value.is_only_edit) {
@@ -160,89 +134,25 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
     let formatted_active = is_past(data[value.value]) ? "Değil" : "Aktif";
     return <td>{formatted_active}</td>;
   } else if (value.is_branch) {
-    return <td>{data.branch_info[0].name}</td>;
+    return <td>{DataFormatter(data, value.doe_type)}</td>;
   } else if (value.is_experience) {
-    if (data[value.value] === "1") {
-      return <td>Tecrübem var</td>;
-    } else {
-      return <td>Tecrübem yok</td>;
-    }
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_expense) {
-    if (data[value.value] === "0") {
-      return <td>6.000.000 TL</td>;
-    } else if (data[value.value] === "1") {
-      return <td>10.000.000 TL</td>;
-    } else {
-      return <td>10.000.000 TL üstü</td>;
-    }
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_subject) {
-    const subject_returner = (id) => {
-      if (id === "0") {
-        return "Genel";
-      }
-      if (id === "1") {
-        return "Hizmet Kalitesi";
-      }
-      if (id === "2") {
-        return "Mikel Mobil Uygulaması";
-      }
-      if (id === "3") {
-        return "Mikel Websitesi";
-      }
-      if (id === "4") {
-        return "Ürün Hakkında";
-      }
-      if (id === "5") {
-        return "Mağaza Geribildirimi";
-      }
-    };
-    let formatted_subject = subject_returner(data[value.value]);
-    return <td>{formatted_subject}</td>;
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_user) {
-    if (data[value.value].length !== 0) {
-      if (value.user_title === "phone") {
-        let formatted_phone_number =
-          "+90 " +
-          data[value.value][0][value.user_title].substring(0, 3) +
-          " " +
-          data[value.value][0][value.user_title].substring(3, 6) +
-          " " +
-          data[value.value][0][value.user_title].substring(6, 8) +
-          " " +
-          data[value.value][0][value.user_title].substring(8, 10);
-        return <td>{formatted_phone_number}</td>;
-      } else {
-        return <td>{data[value.value][0][value.user_title]}</td>;
-      }
-    } else {
-      return <td>Bilgi Yok</td>;
-    }
+    return (
+      <td>
+        {DataFormatter(data[value.value], value.doe_type, value.user_title)}
+      </td>
+    );
   } else if (value.is_check_price) {
-    return <td>{JSON?.parse(data[value.value]).summary.unpaid_amount} TL</td>;
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_check_date) {
-    return <td>{JSON?.parse(data[value.value]).business_date}</td>;
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_payment_type) {
-    let result = "";
-    if (data[value.value] === "cash") {
-      result = "Nakit";
-    } else if (data[value.value] === "coffee_point") {
-      result = "Mikel Cup";
-    } else if (data[value.value] === "mcoin") {
-      result = "Mikel Cup";
-    } else if (data[value.value] === "birthday") {
-      result = "DG İçeceği";
-    } else if (data[value.value] === "campaign") {
-      result = "Kampanya";
-    } else if (data[value.value] === "coupon") {
-      result = "Kupon";
-    } else if (data[value.value] === "balance") {
-      result = "Bakiye Yüklemesi";
-    } else if (data[value.value] === "register") {
-      result = "Kasadan";
-    } else {
-      result = "Bilinmiyor";
-    }
-    return <td>{result}</td>;
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_gift) {
     if (data[value.value] === undefined || data[value.value] === "") {
       return (
@@ -286,38 +196,19 @@ const ItemReturner = ({ value, data, onEdit, setOpen, setId }) => {
       );
     }
   } else if (value.is_discount_type) {
-    const subject_returner = (id) => {
-      if (id === "1") {
-        return "İndirim";
-      }
-      if (id === "2") {
-        return "TL";
-      }
-      if (id === "3") {
-        return "Mikel Cup";
-      }
-      if (id === "4") {
-        return "Ürün";
-      }
-    };
-    let formatted_subject = subject_returner(data[value.value]);
-    return <td>{formatted_subject}</td>;
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_discount_users) {
-    return <td>{data[value.value].length}</td>;
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else if (value.is_luck) {
     if (data[value.condition]) {
       return <td>Boş Ödül</td>;
     } else {
       return <td>{data[value.value]}</td>;
     }
+  } else if (value.is_luck_type) {
+    return <td>{DataFormatter(data[value.value], value.doe_type)}</td>;
   } else {
-    return (
-      <td>
-        {value.value?.includes(".")
-          ? data[value.value.split(".")[0]][value.value.split(".")[1]]
-          : data[value.value]}
-      </td>
-    );
+    return <td>{DataFormatter(data, value.doe_type, null, value.value)}</td>;
   }
 };
 
@@ -386,9 +277,10 @@ const TableContainerUsers = ({
   onEdit,
   onDelete,
   setId,
+  currentPage,
+  setCurrentPage,
 }) => {
   const [open, setOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const data_per_page = 10;
   const indexOfLastData = currentPage * data_per_page;
@@ -451,6 +343,7 @@ const TableContainerUsers = ({
               dataPerPage={data_per_page}
               totalData={data.length}
               paginate={(index) => setCurrentPage(index)}
+              currentPage={currentPage}
             />
           </>
         )}

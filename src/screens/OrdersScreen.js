@@ -18,6 +18,13 @@ const OrdersScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  //Filters
+  const [filteredData, setFilteredData] = useState([]);
+  const [branchFilter, setBranchFilter] = useState("");
+  const [ageFilter0, setAgeFilter0] = useState("");
+  const [ageFilter1, setAgeFilter1] = useState("");
+  const [payFilter, setPayFilter] = useState("");
 
   useEffect(() => {
     if (data.length !== 0) {
@@ -32,6 +39,52 @@ const OrdersScreen = () => {
   useEffect(() => {
     fetchDatas();
   }, []);
+
+  //FilterEffect
+  useEffect(() => {
+    if (
+      branchFilter === "" &&
+      ageFilter0 === "" &&
+      ageFilter1 === "" &&
+      payFilter === ""
+    ) {
+      setFilteredData(data);
+    } else {
+      let new_data = data;
+      if (branchFilter !== "") {
+        new_data = new_data.filter(
+          (i) =>
+            i?.branch_info[0]?.name
+              ?.toLowerCase()
+              .indexOf(branchFilter.toLowerCase()) > -1
+        );
+      }
+      if (ageFilter0 !== "" && ageFilter0.length === 10) {
+        new_data = new_data.filter((i) => {
+          const businessDate = JSON.parse(i.check)?.business_date;
+
+          const businessDateParsed = new Date(businessDate);
+          const ageFilterDate = new Date(ageFilter0);
+
+          return businessDateParsed >= ageFilterDate;
+        });
+      }
+      if (ageFilter1 !== "" && ageFilter1.length === 10) {
+        new_data = new_data.filter((i) => {
+          const businessDate = JSON.parse(i.check)?.business_date;
+
+          const businessDateParsed = new Date(businessDate);
+          const ageFilterDate = new Date(ageFilter1);
+
+          return businessDateParsed <= ageFilterDate;
+        });
+      }
+      if (payFilter !== "") {
+        new_data = new_data.filter((i) => i.paid_with === payFilter);
+      }
+      setFilteredData(new_data);
+    }
+  }, [data, branchFilter, ageFilter0, ageFilter1, payFilter]);
 
   const fetchDatas = async () => {
     setLoading(true);
@@ -65,6 +118,7 @@ const OrdersScreen = () => {
       type: "textinput",
       user_title: "name",
       is_user: true,
+      doe_type: "is_user",
     },
     {
       title: "Soyad",
@@ -72,6 +126,7 @@ const OrdersScreen = () => {
       type: "textinput",
       user_title: "surname",
       is_user: true,
+      doe_type: "is_user",
     },
     {
       title: "Email",
@@ -79,35 +134,80 @@ const OrdersScreen = () => {
       type: "textinput",
       user_title: "email",
       is_user: true,
+      doe_type: "is_user",
+    },
+    {
+      title: "Şube",
+      value: "branch_id",
+      is_branch: true,
+      doe_type: "is_branch",
+      filter: {
+        title: "Şube İsmi",
+        state: branchFilter,
+        setState: setBranchFilter,
+        type: "input",
+      },
     },
     {
       title: "Miktar",
       value: "check",
       type: "textinput",
       is_check_price: true,
+      doe_type: "is_check_price",
     },
     {
       title: "Zaman",
       value: "check",
       type: "textinput",
       is_check_date: true,
+      doe_type: "is_check_date",
+      filter: {
+        title: "Min Zaman",
+        title1: "Max Zaman",
+        state: ageFilter0,
+        setState: setAgeFilter0,
+        state1: ageFilter1,
+        setState1: setAgeFilter1,
+        type: "ages",
+      },
     },
     {
       title: "Ödeme Türü",
       value: "paid_with",
       type: "textinput",
       is_payment_type: true,
+      doe_type: "is_payment_type",
+      filter: {
+        title: "Ödeme Türü",
+        state: payFilter,
+        setState: setPayFilter,
+        type: "choiceinput",
+        options: [
+          { _id: "", name: "Hepsi" },
+          { _id: "cash", name: "Uygulama" },
+          { _id: "mcoin", name: "Mikel Cup" },
+          //{ _id: "balance", name: "Bakiye Yüklemesi" },
+          { _id: "register", name: "Kasa" },
+        ],
+        option_title: "name",
+      },
     },
   ];
 
   return (
-    <PanelContainer>
+    <PanelContainer data={filteredData} values={values} page_id="siparişler">
       {loading ? (
         <Loading />
       ) : (
         <>
-          <PageTitle title={"Siparişler"} is_orders={true} total={total} />
-          <Table values={values} data={data} loading={false} />
+          <PageTitle title={"Siparişler"} total={filteredData.length} />
+          <Table
+            values={values}
+            data={filteredData}
+            loading={false}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </>
       )}
     </PanelContainer>

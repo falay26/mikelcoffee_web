@@ -24,6 +24,7 @@ const NotificationsScreen = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   //Values
   const [titleTR, setTitleTR] = useState("");
   const [titleEN, setTitleEN] = useState("");
@@ -212,7 +213,7 @@ const NotificationsScreen = () => {
   ];
 
   return (
-    <PanelContainer>
+    <PanelContainer data={filteredData} values={values}>
       {loading ? (
         <Loading />
       ) : editOpen ? (
@@ -236,7 +237,13 @@ const NotificationsScreen = () => {
               setEditOpen(true);
             }}
           />
-          <Table values={values} data={filteredData} loading={false} />
+          <Table
+            values={values}
+            data={filteredData}
+            loading={false}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </>
       )}
     </PanelContainer>

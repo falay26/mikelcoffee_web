@@ -36,6 +36,7 @@ const DiscountScreen = ({
   isSurvey,
   isIys,
   isLuck,
+  isNewLuck,
   isSupport,
   setShown,
   branches,
@@ -92,6 +93,12 @@ const DiscountScreen = ({
   setMaxMikelTime,
   setFilters,
   emptyLuck,
+  luckType,
+  luckAmount,
+  setLuckAmount,
+  luckFrequency,
+  setLuckfrequency,
+  setLuckType,
   setEmptyLuck,
   onDone,
 }) => {
@@ -144,7 +151,7 @@ const DiscountScreen = ({
 
   return (
     <>
-      {isDiscount && index === null && (
+      {(isDiscount || isNewLuck) && index === null && (
         <div className="discount_container">
           <div>
             <div className="discount_image_container">
@@ -157,34 +164,38 @@ const DiscountScreen = ({
                 }}
               />
             </div>
-            <p>Lütfen şube seçiniz.</p>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                {"Şube seçiniz"}
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id={"Branch"}
-                label={"Şube"}
-                value={null}
-                onChange={(e) => {
-                  setBranchId((prev) => {
-                    if (!prev.includes(e.target.value)) {
-                      return prev.concat([e.target.value]);
-                    } else {
-                      return prev.filter((i) => i !== e.target.value);
-                    }
-                  });
-                }}
-              >
-                {branches?.map((branch, index) => (
-                  <MenuItem key={index} value={branch._id}>
-                    {branch?.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            {returnSelecteds(branchId, branches, setBranchId)}
+            {isNewLuck !== true && (
+              <>
+                <p>Lütfen şube seçiniz.</p>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    {"Şube seçiniz"}
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id={"Branch"}
+                    label={"Şube"}
+                    value={null}
+                    onChange={(e) => {
+                      setBranchId((prev) => {
+                        if (!prev.includes(e.target.value)) {
+                          return prev.concat([e.target.value]);
+                        } else {
+                          return prev.filter((i) => i !== e.target.value);
+                        }
+                      });
+                    }}
+                  >
+                    {branches?.map((branch, index) => (
+                      <MenuItem key={index} value={branch._id}>
+                        {branch?.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                {returnSelecteds(branchId, branches, setBranchId)}
+              </>
+            )}
             <p>Lütfen Gün seçiniz.</p>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">
@@ -281,7 +292,7 @@ const DiscountScreen = ({
               variant="standard"
               multiline={false}
             />
-            <p>Lütfen kampanya bitiş tarihi giriniz.</p>
+            <p>Lütfen bitiş tarihi giriniz.</p>
             <TextField
               margin="none"
               label={"Bitiş Tarihi (YYYY-MM-DD)"}
@@ -652,133 +663,196 @@ const DiscountScreen = ({
           }
         />
       )}
-      {index === 0 && (
-        <div className="discount_container">
-          <div>
-            <div className="discount_image_container">
-              <img
-                src={require("../../images/close_icon.png")}
-                height="24"
-                width="24"
-                onClick={() => {
-                  setIndex(null);
-                }}
+      {index === 0 &&
+        (isNewLuck !== true ? (
+          <div className="discount_container">
+            <div>
+              <div className="discount_image_container">
+                <img
+                  src={require("../../images/close_icon.png")}
+                  height="24"
+                  width="24"
+                  onClick={() => {
+                    setIndex(null);
+                  }}
+                />
+              </div>
+              {isLuck && (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      margin="dense"
+                      checked={emptyLuck}
+                      onChange={(e) => setEmptyLuck(e.target.checked)}
+                      fullWidth
+                      variant="standard"
+                    />
+                  }
+                  label={"Boş Ödül"}
+                />
+              )}
+              <p>Lütfen kampanya ismi giriniz.</p>
+              <TextField
+                margin="none"
+                label={"Kampanya ismi"}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                type="email"
+                fullWidth
+                variant="standard"
+                multiline={false}
               />
-            </div>
-            {isLuck && (
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    margin="dense"
-                    checked={emptyLuck}
-                    onChange={(e) => setEmptyLuck(e.target.checked)}
+              <p>Lütfen kampanya kullanım koşulları giriniz.</p>
+              <RichTextEditor
+                ref={rteRef1}
+                extensions={[StarterKit]}
+                content=""
+                renderControls={() => (
+                  <MenuControlsContainer>
+                    <MenuSelectHeading />
+                    <MenuDivider />
+                    <MenuButtonBold />
+                    <MenuButtonItalic />
+                  </MenuControlsContainer>
+                )}
+              />
+              {isLuck && (
+                <>
+                  <p>Lütfen kampanya oranı giriniz.</p>
+                  <TextField
+                    margin="none"
+                    label={"Oran"}
+                    value={chance}
+                    onChange={(e) => setChance(e.target.value)}
+                    type="number"
                     fullWidth
                     variant="standard"
+                    multiline={false}
                   />
-                }
-                label={"Boş Ödül"}
-              />
-            )}
-            <p>Lütfen kampanya ismi giriniz.</p>
-            <TextField
-              margin="none"
-              label={"Kampanya ismi"}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              type="email"
-              fullWidth
-              variant="standard"
-              multiline={false}
-            />
-            <p>Lütfen kampanya kullanım koşulları giriniz.</p>
-            <RichTextEditor
-              ref={rteRef1}
-              extensions={[StarterKit]}
-              content=""
-              renderControls={() => (
-                <MenuControlsContainer>
-                  <MenuSelectHeading />
-                  <MenuDivider />
-                  <MenuButtonBold />
-                  <MenuButtonItalic />
-                </MenuControlsContainer>
+                </>
               )}
-            />
-            {isLuck && (
-              <>
-                <p>Lütfen kampanya oranı giriniz.</p>
-                <TextField
-                  margin="none"
-                  label={"Oran"}
-                  value={chance}
-                  onChange={(e) => setChance(e.target.value)}
-                  type="number"
-                  fullWidth
-                  variant="standard"
-                  multiline={false}
-                />
-              </>
-            )}
-            <p>Lütfen kampanya türü seçiniz.</p>
-            <div className="discount_type_container">
-              <Button
-                onClick={() => setDiscountType("1")}
-                color="primary"
-                variant={discountType === "1" ? "outlined" : "text"}
-              >
-                İndirim
-              </Button>
-              <Button
-                onClick={() => setDiscountType("2")}
-                color="primary"
-                variant={discountType === "2" ? "outlined" : "text"}
-              >
-                TL
-              </Button>
-              <Button
-                onClick={() => setDiscountType("3")}
-                color="primary"
-                variant={discountType === "3" ? "outlined" : "text"}
-              >
-                Mikel Cup
-              </Button>
-              <Button
-                onClick={() => setDiscountType("4")}
-                color="primary"
-                variant={discountType === "4" ? "outlined" : "text"}
-              >
-                Ürün
-              </Button>
+              <p>Lütfen kampanya türü seçiniz.</p>
+              <div className="discount_type_container">
+                <Button
+                  onClick={() => setDiscountType("1")}
+                  color="primary"
+                  variant={discountType === "1" ? "outlined" : "text"}
+                >
+                  İndirim
+                </Button>
+                <Button
+                  onClick={() => setDiscountType("2")}
+                  color="primary"
+                  variant={discountType === "2" ? "outlined" : "text"}
+                >
+                  TL
+                </Button>
+                <Button
+                  onClick={() => setDiscountType("3")}
+                  color="primary"
+                  variant={discountType === "3" ? "outlined" : "text"}
+                >
+                  Mikel Cup
+                </Button>
+                <Button
+                  onClick={() => setDiscountType("4")}
+                  color="primary"
+                  variant={discountType === "4" ? "outlined" : "text"}
+                >
+                  Ürün
+                </Button>
+              </div>
             </div>
-          </div>
-          <Button
-            onClick={() => {
-              if (discountType === "") {
-                alert("Lütfen seçim yapınız.");
-              } else {
-                if (isLuck && emptyLuck) {
-                  if (chance === "") {
-                    alert("Lütfen Oran bilgisi giriniz.");
-                  } else {
-                    onDone();
-                  }
+            <Button
+              onClick={() => {
+                if (discountType === "") {
+                  alert("Lütfen seçim yapınız.");
                 } else {
-                  if (isLuck && chance === "") {
-                    alert("Lütfen Oran bilgisi giriniz.");
+                  if (isLuck && emptyLuck) {
+                    if (chance === "") {
+                      alert("Lütfen Oran bilgisi giriniz.");
+                    } else {
+                      onDone();
+                    }
                   } else {
-                    setDescription(rteRef1.current?.editor?.getHTML());
-                    setIndex(1);
+                    if (isLuck && chance === "") {
+                      alert("Lütfen Oran bilgisi giriniz.");
+                    } else {
+                      setDescription(rteRef1.current?.editor?.getHTML());
+                      setIndex(1);
+                    }
                   }
                 }
-              }
-            }}
-            color="primary"
-            variant="contained"
-          >
-            Sıradaki
-          </Button>
-        </div>
-      )}
+              }}
+              color="primary"
+              variant="contained"
+            >
+              Sıradaki
+            </Button>
+          </div>
+        ) : (
+          <div className="discount_container">
+            <div>
+              <p>Lütfen şans oyunu türü seçiniz.</p>
+              <div className="filter_row">
+                <Button
+                  fullWidth
+                  onClick={() => setLuckType("1")}
+                  color="primary"
+                  variant={luckType === "1" ? "outlined" : "text"}
+                >
+                  Kazı Kazan
+                </Button>
+                <Button
+                  fullWidth
+                  onClick={() => setLuckType("2")}
+                  color="primary"
+                  variant={luckType === "2" ? "outlined" : "text"}
+                >
+                  Çark
+                </Button>
+                <Button
+                  fullWidth
+                  onClick={() => setLuckType("3")}
+                  color="primary"
+                  variant={luckType === "3" ? "outlined" : "text"}
+                >
+                  Salla Kazan
+                </Button>
+              </div>
+              <p>Lütfen oynanabilme sınırı giriniz.</p>
+              <TextField
+                margin="none"
+                label={"En fazla kaç kez oynanabilsin?"}
+                value={luckAmount}
+                onChange={(e) => setLuckAmount(e.target.value)}
+                type="number"
+                fullWidth
+                variant="standard"
+                multiline={false}
+              />
+              <p>Lütfen oynanabilme sıklığı giriniz.</p>
+              <TextField
+                margin="none"
+                label={"Bir kullanıcı kaç kez oynayabilsin?"}
+                value={luckFrequency}
+                onChange={(e) => setLuckfrequency(e.target.value)}
+                type="number"
+                fullWidth
+                variant="standard"
+                multiline={false}
+              />
+            </div>
+            <Button onClick={onDone} color="primary" variant="contained">
+              {isDiscount && "İndirim Ekle"}
+              {isCoupon && "Kupon Ekle"}
+              {isSurvey && "Anket Ekle"}
+              {isLuck && "Şans Ekle"}
+              {isNewLuck && "Şans Oyunu Ekle"}
+              {isSupport && "Hediye Gönder"}
+            </Button>
+          </div>
+        ))}
       {index === 1 && (
         <div className="discount_container">
           <div>

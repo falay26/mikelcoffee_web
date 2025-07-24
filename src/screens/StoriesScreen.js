@@ -27,6 +27,7 @@ const StoriesScreen = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [id, setId] = useState();
 
@@ -240,6 +241,7 @@ const StoriesScreen = () => {
       title: "Kampanya",
       value: "campaign_id",
       not_visible: true,
+      doe_type: "not_visible",
       type: "choiceinput",
       state: campaign,
       setState: setCampaign,
@@ -250,6 +252,7 @@ const StoriesScreen = () => {
       title: "Şube",
       value: "branch_id",
       not_visible: true,
+      doe_type: "not_visible",
       type: "choiceinput",
       state: branch,
       setState: setBranch,
@@ -260,6 +263,7 @@ const StoriesScreen = () => {
       title: "Süre (Gün)",
       not_visible: true,
       value: "end_date",
+      doe_type: "not_visible",
       type: "textinput",
       state: days,
       setState: setDays,
@@ -267,12 +271,13 @@ const StoriesScreen = () => {
     {
       title: "Düzenle/Sil",
       value: null,
+      doe_type: "not_visible",
       is_edit: true,
     },
   ];
 
   return (
-    <PanelContainer>
+    <PanelContainer data={data} values={values} page_id="hikayeler">
       {loading ? (
         <Loading />
       ) : editOpen ? (
@@ -308,6 +313,8 @@ const StoriesScreen = () => {
             }}
             onDelete={deleteHandler}
             setId={setId}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </>
       )}

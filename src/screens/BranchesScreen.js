@@ -7,6 +7,8 @@ import AddEdit from "../components/AddEdit";
 import Loading from "../components/Loading";
 //API
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+//Excel
+import * as XLSX from "xlsx/xlsx.mjs";
 
 const APIS = {
   get: "/get_all_branches",
@@ -22,6 +24,7 @@ const BranchesScreen = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [id, setId] = useState();
 
@@ -48,6 +51,13 @@ const BranchesScreen = () => {
   const [getir, setGetir] = useState("");
   const [yemek, setYemek] = useState("");
   const [token, setToken] = useState("");
+
+  const handleExportData = () => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "Data.xlsx");
+  };
 
   useEffect(() => {
     fetchDatas();
@@ -263,6 +273,7 @@ const BranchesScreen = () => {
       title: "Telefon",
       value: "phone",
       is_phone: true,
+      doe_type: "is_phone",
       type: "textinput",
       state: phone,
       setState: setPhone,
@@ -271,6 +282,7 @@ const BranchesScreen = () => {
       title: "Çalışma Saateri",
       value: "working_hours",
       type: "working_hours",
+      doe_type: "not_visible",
       not_visible: true,
       states: [
         workingHours00,
@@ -346,12 +358,13 @@ const BranchesScreen = () => {
     {
       title: "Düzenle/Sil",
       value: null,
+      doe_type: "not_visible",
       is_edit: true,
     },
   ];
 
   return (
-    <PanelContainer>
+    <PanelContainer data={data} values={values} page_id="şubeler">
       {loading ? (
         <Loading />
       ) : editOpen ? (
@@ -387,6 +400,8 @@ const BranchesScreen = () => {
             }}
             onDelete={() => deleteHandler()}
             setId={setId}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </>
       )}

@@ -15,8 +15,11 @@ const PanelScreen = () => {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   //Filters
   const [filteredData, setFilteredData] = useState([]);
+  const [nameFilter, setNameFilter] = useState("");
+  const [surnameFilter, setSurnameFilter] = useState("");
   const [emailFilter, setEmailFilter] = useState("");
   const [ageFilter0, setAgeFilter0] = useState("");
   const [ageFilter1, setAgeFilter1] = useState("");
@@ -27,12 +30,58 @@ const PanelScreen = () => {
 
   const values = [
     {
+      title: "Dil Tercihi",
+      value: "preferred_language",
+      not_visible: true,
+    },
+    {
+      title: "Bakiye",
+      value: "cash",
+      doe_type: "is_cash",
+      not_visible: true,
+    },
+    {
+      title: "Mikel Cup",
+      value: "mikel_cups",
+      doe_type: "is_mikel_cup",
+      not_visible: true,
+    },
+    {
+      title: "Kurumsal E-Posta",
+      value: "corporate_email",
+      not_visible: true,
+    },
+    {
+      title: "E-Posta İzni",
+      value: "email_permission",
+      doe_type: "is_bool",
+      not_visible: true,
+    },
+    {
+      title: "Sms İzni",
+      value: "sms_permission",
+      doe_type: "is_bool",
+      not_visible: true,
+    },
+    {
       title: "Ad",
       value: "name",
+      filter: {
+        title: "Ad",
+        state: nameFilter,
+        setState: setNameFilter,
+        type: "input",
+      },
     },
     {
       title: "Soyad",
       value: "surname",
+      filter: {
+        title: "Soyad",
+        state: surnameFilter,
+        setState: setSurnameFilter,
+        type: "input",
+      },
     },
     {
       title: "Email",
@@ -48,11 +97,13 @@ const PanelScreen = () => {
       title: "Telefon",
       value: "phone",
       is_phone: true,
+      doe_type: "is_phone",
     },
     {
       title: "Doğum Tarihi",
       value: "birth_date",
       is_birth: true,
+      doe_type: "is_birth",
       filter: {
         title: "Min Yaş",
         title1: "Max Yaş",
@@ -67,6 +118,7 @@ const PanelScreen = () => {
       title: "Cinsiyet",
       value: "gender_id",
       is_gender: true,
+      doe_type: "is_gender",
       filter: {
         title: "Cinsiyet",
         state: genderFilter,
@@ -85,6 +137,7 @@ const PanelScreen = () => {
       title: "Personel",
       value: "is_personel",
       is_personel: true,
+      doe_type: "is_bool",
       filter: {
         title: "Personel",
         state: personelFilter,
@@ -165,6 +218,8 @@ const PanelScreen = () => {
   //FilterEffect
   useEffect(() => {
     if (
+      nameFilter === "" &&
+      surnameFilter === "" &&
       emailFilter === "" &&
       ageFilter0 === "" &&
       ageFilter1 === "" &&
@@ -174,6 +229,17 @@ const PanelScreen = () => {
       setFilteredData(data);
     } else {
       let new_data = data;
+      if (nameFilter !== "") {
+        new_data = new_data.filter(
+          (i) => i.name.toLowerCase().indexOf(nameFilter.toLowerCase()) > -1
+        );
+      }
+      if (surnameFilter !== "") {
+        new_data = new_data.filter(
+          (i) =>
+            i.surname.toLowerCase().indexOf(surnameFilter.toLowerCase()) > -1
+        );
+      }
       if (emailFilter !== "") {
         new_data = new_data.filter(
           (i) => i.email.toLowerCase().indexOf(emailFilter.toLowerCase()) > -1
@@ -201,16 +267,31 @@ const PanelScreen = () => {
       }
       setFilteredData(new_data);
     }
-  }, [data, emailFilter, ageFilter0, ageFilter1, genderFilter, personelFilter]);
+  }, [
+    data,
+    nameFilter,
+    surnameFilter,
+    emailFilter,
+    ageFilter0,
+    ageFilter1,
+    genderFilter,
+    personelFilter,
+  ]);
 
   return (
-    <PanelContainer>
+    <PanelContainer data={filteredData} values={values} page_id="üyeler">
       {loading ? (
         <Loading />
       ) : (
         <>
           <PageTitle title={"Üyeler"} total={filteredData.length} />
-          <Table values={values} data={filteredData} loading={false} />
+          <Table
+            values={values}
+            data={filteredData}
+            loading={false}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </>
       )}
       <DeleteModal1

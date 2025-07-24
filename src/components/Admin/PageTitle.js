@@ -15,8 +15,9 @@ const PageTitle = ({
   survey,
   iys,
   luck,
+  luckOld,
   onPress,
-  onLuckPress,
+  onBackPress,
 }) => {
   return (
     <div className="page_title_container">
@@ -73,19 +74,24 @@ const PageTitle = ({
       )}
       {luck && (
         <Button onClick={onPress} color="primary" variant="text">
-          Ödül Ekle
+          Şans Oyunu Ekle
         </Button>
+      )}
+      {luckOld && (
+        <>
+          <Button onClick={onBackPress} color="primary" variant="text">
+            Geri Dön
+          </Button>
+          <Button onClick={onPress} color="primary" variant="text">
+            Şans Ekle
+          </Button>
+        </>
       )}
       {total ? (
         <h1>
           Toplam: {total} {is_orders && "TL"}
         </h1>
       ) : null}
-      {luck && (
-        <Button onClick={onLuckPress} color="primary" variant="text">
-          Geri dön
-        </Button>
-      )}
     </div>
   );
 };

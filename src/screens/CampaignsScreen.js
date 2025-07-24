@@ -25,6 +25,7 @@ const CampaignsScreen = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [id, setId] = useState();
 
@@ -260,6 +261,7 @@ const CampaignsScreen = () => {
       title: "Başlık (İngilizce)",
       value: "title.en",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: titleEN,
       setState: setTitleEN,
@@ -268,6 +270,7 @@ const CampaignsScreen = () => {
       title: "Başlık (Yunanca)",
       value: "title.gr",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: titleGR,
       setState: setTitleGR,
@@ -276,6 +279,7 @@ const CampaignsScreen = () => {
       title: "Başlık (Arapça)",
       value: "title.ar",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: titleAR,
       setState: setTitleAR,
@@ -292,6 +296,7 @@ const CampaignsScreen = () => {
       title: "Alt Başlık (İngilizce)",
       value: "subtitle.en",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: subtitleEN,
       setState: setSubtitleEN,
@@ -300,6 +305,7 @@ const CampaignsScreen = () => {
       title: "Alt Başlık (Yunanca)",
       value: "subtitle.gr",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: subtitleGR,
       setState: setSubtitleGR,
@@ -308,6 +314,7 @@ const CampaignsScreen = () => {
       title: "Alt Başlık (Arapça)",
       value: "subtitle.ar",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: subtitleAR,
       setState: setSubtitleAR,
@@ -316,6 +323,7 @@ const CampaignsScreen = () => {
       title: "İçerik (Türkçe)",
       value: "description.tr",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: descriptionTR,
       setState: setDescriptionTR,
@@ -325,6 +333,7 @@ const CampaignsScreen = () => {
       title: "İçerik (İngilizce)",
       value: "description.en",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: descriptionEN,
       setState: setDescriptionEN,
@@ -334,6 +343,7 @@ const CampaignsScreen = () => {
       title: "İçerik (Yunanca)",
       value: "description.gr",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: descriptionGR,
       setState: setDescriptionGR,
@@ -343,6 +353,7 @@ const CampaignsScreen = () => {
       title: "İçerik (Arapça)",
       value: "description.ar",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: descriptionAR,
       setState: setDescriptionAR,
@@ -352,6 +363,7 @@ const CampaignsScreen = () => {
       title: "Başlangıç Tarihi",
       value: "start_date",
       is_birth: true,
+      doe_type: "is_birth",
       type: "dateselection",
       state: startDate,
       setState: setStartDate,
@@ -366,6 +378,7 @@ const CampaignsScreen = () => {
       title: "Bitiş Tarihi",
       value: "end_date",
       is_birth: true,
+      doe_type: "is_birth",
       type: "dateselection",
       state: endDate,
       setState: setEndDate,
@@ -380,6 +393,7 @@ const CampaignsScreen = () => {
       title: "Şube",
       value: "branch_id",
       not_visible: true,
+      doe_type: "not_visible",
       type: "choiceinput",
       state: branch,
       setState: setBranch,
@@ -390,6 +404,7 @@ const CampaignsScreen = () => {
       title: "Getir Ve Yemeksepeti Linkleri",
       value: "online",
       not_visible: true,
+      doe_type: "not_visible",
       type: "checkbox",
       state: online,
       setState: setOnline,
@@ -397,6 +412,7 @@ const CampaignsScreen = () => {
     {
       title: "Düzenle/Sil",
       value: null,
+      doe_type: "not_visible",
       is_edit: true,
     },
   ];
@@ -432,7 +448,7 @@ const CampaignsScreen = () => {
   }, [data, startFilter, endFilter]);
 
   return (
-    <PanelContainer>
+    <PanelContainer data={filteredData} values={values} page_id="postlar">
       {loading ? (
         <Loading />
       ) : editOpen ? (
@@ -468,6 +484,8 @@ const CampaignsScreen = () => {
             }}
             onDelete={deleteHandler}
             setId={setId}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </>
       )}

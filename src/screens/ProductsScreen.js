@@ -22,6 +22,7 @@ const ProductsScreen = () => {
   const [loading, setLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [id, setId] = useState();
 
@@ -51,6 +52,8 @@ const ProductsScreen = () => {
   const [coin, setCoin] = useState("");
   const [vegan, setVegan] = useState(false);
   const [shown, setShown] = useState(true);
+  const [simpraId, setSimpraId] = useState("");
+  const [simpraName, setSimpraName] = useState("");
   //Filters
   const [filteredData, setFilteredData] = useState([]);
   const [nameFilter, setNameFilter] = useState("");
@@ -117,6 +120,8 @@ const ProductsScreen = () => {
         coin: coin,
         vegan: vegan,
         shown: shown,
+        simpra_id: simpraId,
+        simpra_name: simpraName,
       };
       const response = await axiosPrivate.post(
         APIS.add,
@@ -173,6 +178,8 @@ const ProductsScreen = () => {
         coin: coin,
         vegan: vegan,
         shown: shown,
+        simpra_id: simpraId,
+        simpra_name: simpraName,
       };
       const response = await axiosPrivate.post(
         APIS.update,
@@ -251,6 +258,8 @@ const ProductsScreen = () => {
     setCoin(item === undefined ? "" : item.coin);
     setVegan(item === undefined ? false : item.vegan);
     setShown(item === undefined ? false : item.shown);
+    setSimpraId(item === undefined ? "" : item.simpra_id);
+    setSimpraName(item === undefined ? "" : item.simpra_name);
   };
 
   const ingredientsHandler = (bool, id) => {
@@ -313,6 +322,7 @@ const ProductsScreen = () => {
     {
       title: "Kategori",
       value: "category_id",
+      doe_type: "is_product_category",
       not_visible: true,
       type: "choiceinput",
       state: category,
@@ -340,6 +350,7 @@ const ProductsScreen = () => {
       title: "Alt Kategori (İngilizce)",
       value: "sub_category.en",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: subCategoryEN,
       setState: setSubCategoryEN,
@@ -348,6 +359,7 @@ const ProductsScreen = () => {
       title: "Alt Kategori (Yunanca)",
       value: "sub_category.gr",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: subCategoryGR,
       setState: setSubCategoryGR,
@@ -356,6 +368,7 @@ const ProductsScreen = () => {
       title: "Alt Kategori (Arapça)",
       value: "sub_category.ar",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: subCategoryAR,
       setState: setSubCategoryAR,
@@ -376,6 +389,7 @@ const ProductsScreen = () => {
     {
       title: "İsim (İngilizce)",
       value: "title.en",
+      doe_type: "not_visible",
       not_visible: true,
       type: "textinput",
       state: titleEN,
@@ -384,6 +398,7 @@ const ProductsScreen = () => {
     {
       title: "İsim (Yunanca)",
       value: "title.gr",
+      doe_type: "not_visible",
       not_visible: true,
       type: "textinput",
       state: titleGR,
@@ -392,6 +407,7 @@ const ProductsScreen = () => {
     {
       title: "İsim (Arapça)",
       value: "title.ar",
+      doe_type: "not_visible",
       not_visible: true,
       type: "textinput",
       state: titleAR,
@@ -400,6 +416,7 @@ const ProductsScreen = () => {
     {
       title: "Resim",
       value: "image",
+      doe_type: "not_visible",
       is_image: true,
       type: "imageinput",
       state: image,
@@ -418,6 +435,7 @@ const ProductsScreen = () => {
       title: "Hakkında (İngilizce)",
       value: "description.en",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: descriptionEN,
       setState: setDescriptionEN,
@@ -427,6 +445,7 @@ const ProductsScreen = () => {
       title: "Hakkında (Yunanca)",
       value: "description.gr",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: descriptionGR,
       setState: setDescriptionGR,
@@ -436,6 +455,7 @@ const ProductsScreen = () => {
       title: "Hakkında (Arapça)",
       value: "description.ar",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: descriptionAR,
       setState: setDescriptionAR,
@@ -445,6 +465,7 @@ const ProductsScreen = () => {
       title: "İçindekiler",
       value: "ingredients",
       not_visible: true,
+      doe_type: "not_visible",
       type: "multichoiceinput",
       state: ingredients,
       setState: ingredientsHandler,
@@ -489,6 +510,7 @@ const ProductsScreen = () => {
       title: "İçindekiler Ek Yazısı (Türkçe)",
       value: "ingredients_text.tr",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: ingredientsTextTR,
       setState: setIngredientsTextTR,
@@ -497,6 +519,7 @@ const ProductsScreen = () => {
       title: "İçindekiler Ek Yazısı (İngilizce)",
       value: "ingredients_text.en",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: ingredientsTextEN,
       setState: setIngredientsTextEN,
@@ -505,6 +528,7 @@ const ProductsScreen = () => {
       title: "İçindekiler Ek Yazısı (Yunanca)",
       value: "ingredients_text.gr",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: ingredientsTextGR,
       setState: setIngredientsTextGR,
@@ -513,6 +537,7 @@ const ProductsScreen = () => {
       title: "İçindekiler Ek Yazısı (Arapça)",
       value: "ingredients_text.ar",
       not_visible: true,
+      doe_type: "not_visible",
       type: "textinput",
       state: ingredientsTextAR,
       setState: setIngredientsTextAR,
@@ -521,6 +546,7 @@ const ProductsScreen = () => {
       title: "Boyut",
       value: "sizes",
       not_visible: true,
+      doe_type: "not_visible",
       type: "multichoiceinput",
       state: sizes,
       setState: sizesHandler,
@@ -538,6 +564,7 @@ const ProductsScreen = () => {
       title: "Getir Ve Yemeksepeti Linkleri",
       value: "online",
       not_visible: true,
+      doe_type: "is_bool",
       type: "checkbox",
       state: online,
       setState: setOnline,
@@ -546,6 +573,7 @@ const ProductsScreen = () => {
       title: "Alerjenler",
       value: "allergens",
       not_visible: true,
+      doe_type: "not_visible",
       type: "multichoiceinput",
       state: allergens,
       setState: allergensHandler,
@@ -577,6 +605,7 @@ const ProductsScreen = () => {
       title: "İçerebilir",
       value: "contains",
       not_visible: true,
+      doe_type: "not_visible",
       type: "multichoiceinput",
       state: contains,
       setState: containsHandler,
@@ -605,7 +634,7 @@ const ProductsScreen = () => {
       option_title: "title",
     },
     {
-      title: "Mikel Coin",
+      title: "Mikel Cup",
       value: "coin",
       type: "textinput",
       state: coin,
@@ -615,6 +644,7 @@ const ProductsScreen = () => {
       title: "Vegan",
       value: "vegan",
       not_visible: true,
+      doe_type: "not_visible",
       type: "checkbox",
       state: vegan,
       setState: setVegan,
@@ -623,13 +653,31 @@ const ProductsScreen = () => {
       title: "Gösterimde",
       value: "shown",
       not_visible: true,
+      doe_type: "is_bool",
       type: "checkbox",
       state: shown,
       setState: setShown,
     },
     {
+      title: "Simpra ID",
+      value: "simpra_id",
+      not_visible: true,
+      type: "textinput",
+      state: simpraId,
+      setState: setSimpraId,
+    },
+    {
+      title: "Simpra İsim",
+      value: "simpra_name",
+      not_visible: true,
+      type: "textinput",
+      state: simpraName,
+      setState: setSimpraName,
+    },
+    {
       title: "Düzenle/Sil",
       value: null,
+      doe_type: "not_visible",
       is_edit: true,
     },
   ];
@@ -651,7 +699,7 @@ const ProductsScreen = () => {
   }, [data, nameFilter]);
 
   return (
-    <PanelContainer>
+    <PanelContainer data={filteredData} values={values} page_id="ürünler">
       {loading ? (
         <Loading />
       ) : editOpen ? (
@@ -687,6 +735,8 @@ const ProductsScreen = () => {
             }}
             onDelete={deleteHandler}
             setId={setId}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </>
       )}

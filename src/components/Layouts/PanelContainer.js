@@ -8,6 +8,8 @@ import useWindowSize from "../../hooks/useWindowSize";
 import useAuth from "../../hooks/useAuth";
 //Constants
 import Roles from "../../constants/Roles";
+//Excel
+import ExcelExporter from "../../helpers/ExcelExporter";
 
 const ViewHandler = ({ children }) => {
   const { auth } = useAuth();
@@ -15,7 +17,7 @@ const ViewHandler = ({ children }) => {
   return auth.roles.includes(Roles.Admin) ? children : <Unauthorized />;
 };
 
-const PanelContainer = ({ children }) => {
+const PanelContainer = ({ children, data, values, page_id }) => {
   const [width] = useWindowSize();
 
   const [open, setOpen] = useState(true);
@@ -47,11 +49,15 @@ const PanelContainer = ({ children }) => {
     document.querySelector("#panel").classList.remove("small");
   };
 
+  const handleExportData = () => {
+    ExcelExporter(data, values);
+  };
+
   return (
     <div className="panel_container">
       <SideBar open={open} setOpen={setOpen} />
       <div className="panel_content_container large" id="panel">
-        <Navbar />
+        <Navbar onExcel={() => handleExportData()} page_id={page_id} />
         <div className="panel_inside">
           <ViewHandler children={children} />
         </div>

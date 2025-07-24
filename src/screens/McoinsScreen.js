@@ -17,6 +17,7 @@ const McoinsScreen = () => {
   const [loading, setLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [id, setId] = useState();
 
@@ -134,7 +135,7 @@ const McoinsScreen = () => {
   };
 
   return (
-    <PanelContainer>
+    <PanelContainer data={data} values={values}>
       {loading ? (
         <Loading />
       ) : editOpen ? (
@@ -159,6 +160,8 @@ const McoinsScreen = () => {
               setEditOpen(true);
             }}
             setId={setId}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </>
       )}

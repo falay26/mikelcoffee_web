@@ -17,6 +17,9 @@ const APIS = {
   get: "/get_all_lucks",
   add: "/add_luck",
   delete: "/delete_luck",
+  get_new: "/get_all_nlucks",
+  add_new: "/add_nluck",
+  delete_new: "/delete_nluck",
   get_products: "/get_all_products",
   get_branches: "/get_all_branches",
   get_admin: "/get_admin_controls",
@@ -30,20 +33,28 @@ const LucksScreen = () => {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedNLuck, setSelectedNluck] = useState(null);
+  const [dataOld, setDataOld] = useState([]);
+  const [currentPageOld, setCurrentPageOld] = useState(1);
   //Discounts
   const [shown, setShown] = useState(false);
+  const [newShown, setNewShown] = useState(false);
   const [branches, setBranches] = useState([]);
   const [code, setCode] = useState("");
   const [usageAmount, setUsageAmount] = useState("");
   const [usageFrequency, setUsageFrequency] = useState("");
-  const [branchId, setBranchId] = useState("");
-  const [dayId, setDayId] = useState("");
+  const [branchId, setBranchId] = useState([]);
+  const [dayId, setDayId] = useState([]);
   const [startHour, setStartHour] = useState("");
   const [endHour, setEndHour] = useState("");
   const [email, setEmail] = useState("");
+  const [personel, setPersonel] = useState(false);
+  const [student, setStudent] = useState(false);
   const [minPayment, setMinPayment] = useState("");
   const [discountIndex, setDiscountIndex] = useState(null);
-  const [discountUsers, setDiscountUsers] = useState([]);
+  const [discountIndexOld, setDiscountIndexOld] = useState(null);
+  const [finalDate, setFinalDate] = useState("");
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -58,8 +69,8 @@ const LucksScreen = () => {
   const [productId, setProductId] = useState([]);
   const [emptyLuck, setEmptyLuck] = useState(false);
   //Lucks
-  const [settingsOpen, setSettingOpen] = useState(true);
   const [luckType, setLuckType] = useState("0");
+  const [luckAmount, setLuckAmount] = useState("");
   const [luckFrequency, setLuckfrequency] = useState("");
   const [luckOpen, setLuckOpen] = useState(false);
   const [admin, setAdmin] = useState(null);
@@ -67,12 +78,18 @@ const LucksScreen = () => {
 
   useEffect(() => {
     if (discountIndex === null) {
-      setShown(false);
+      setNewShown(false);
     }
   }, [discountIndex]);
 
   useEffect(() => {
-    fetchDatas();
+    if (discountIndexOld === null) {
+      setShown(false);
+    }
+  }, [discountIndexOld]);
+
+  useEffect(() => {
+    fetchDatasNew();
     fetchDatas1();
     fetchDatas2();
   }, []);
@@ -105,6 +122,38 @@ const LucksScreen = () => {
       setLoading(false);
       if (response.status === 200) {
         setData(response.data.data);
+      }
+    } catch (err) {
+      setLoading(false);
+      // TODO: Errorhandling..
+    }
+  };
+
+  const fetchDatasNew = async (checker) => {
+    setLoading(true);
+    try {
+      let parameters = {};
+      const response = await axiosPrivate.post(
+        APIS.get_new,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      setLoading(false);
+      if (response.status === 200) {
+        setData(response.data.data);
+        if (checker) {
+          let new_nluck = response.data.data.filter(
+            (i) => i._id.toString() === selectedNLuck._id.toString()
+          )[0];
+          setSelectedNluck(new_nluck);
+          setDataOld(new_nluck.luck_ids);
+        }
       }
     } catch (err) {
       setLoading(false);
@@ -167,15 +216,81 @@ const LucksScreen = () => {
 
   const values = [
     {
-      title: "Ad",
-      value: "name",
+      title: "Tür",
+      value: "luck_type",
+      is_luck_type: true,
+      doe_type: "is_luck_type",
+    },
+    {
+      title: "Kullanım Sınırı",
+      value: "usage_amount",
       type: "textinput",
-      condition: "empty",
-      is_luck: true,
+    },
+    {
+      title: "Kullanım Sıklığı",
+      value: "usage_frequency",
+      type: "textinput",
+    },
+    {
+      title: "Kullanıcı",
+      value: "users",
+      type: "textinput",
+      is_discount_users: true,
+      doe_type: "is_discount_users",
+    },
+    {
+      title: "Tarih",
+      value: "created_at",
+      is_birth: true,
+      doe_type: "is_birth",
+    },
+    {
+      title: "Ödüller",
+      value: null,
+      doe_type: "not_visible",
+      onPress: (val) => {
+        setSelectedNluck(val);
+        setDataOld(val.luck_ids);
+      },
+      is_show_lucks: true,
     },
     {
       title: "Sil",
       value: null,
+      doe_type: "not_visible",
+      is_delete: true,
+    },
+  ];
+
+  const valuesOld = [
+    {
+      title: "İsim",
+      value: "name",
+    },
+    {
+      title: "Tür",
+      value: "type",
+      type: "textinput",
+      is_discount_type: true,
+      doe_type: "is_discount_type",
+    },
+    {
+      title: "Kullanıcı",
+      value: "users",
+      type: "textinput",
+      is_discount_users: true,
+      doe_type: "is_discount_users",
+    },
+    {
+      title: "Tarih",
+      value: "created_at",
+      is_birth: true,
+      doe_type: "is_birth",
+    },
+    {
+      title: "Sil",
+      value: null,
+      doe_type: "not_visible",
       is_delete: true,
     },
   ];
@@ -228,6 +343,7 @@ const LucksScreen = () => {
         end_date: endDate,
         product_ids: productId,
         empty: emptyLuck,
+        nluck_id: selectedNLuck._id,
       };
       const response = await axiosPrivate.post(
         APIS.add,
@@ -242,7 +358,56 @@ const LucksScreen = () => {
       );
       if (response.status === 200) {
         setShown(false);
-        fetchDatas();
+        fetchDatasNew(true);
+      }
+    } catch (err) {
+      setLoading(false);
+      alert("Bir sorun oluştu, lütfen tekrar deneyiniz!");
+    }
+  };
+
+  const handleDoneNew = async () => {
+    setLoading(true);
+    try {
+      let parameters = {
+        name: name,
+        description: description,
+        filters: {
+          branch_ids: branchId,
+          day_id: dayId,
+          start_hour: startHour,
+          end_hour: endHour,
+          email: email,
+          personel: personel,
+          student: student,
+          min_payment: minPayment,
+          product_ids: productId,
+        },
+        type: discountType,
+        min_limit: minLimit,
+        percent: percent,
+        amount: amount,
+        end_date: endDate,
+        final_date: finalDate,
+        max_mikel_time: endDate,
+        luck_type: luckType,
+        usage_amount: luckAmount,
+        usage_frequency: luckFrequency,
+      };
+      const response = await axiosPrivate.post(
+        APIS.add_new,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        setNewShown(false);
+        fetchDatasNew();
       }
     } catch (err) {
       setLoading(false);
@@ -283,6 +448,7 @@ const LucksScreen = () => {
     try {
       let parameters = {
         luck_id: id,
+        nluck_id: selectedNLuck._id,
       };
       const response = await axiosPrivate.post(
         APIS.delete,
@@ -296,7 +462,33 @@ const LucksScreen = () => {
         }
       );
       if (response.status === 200) {
-        fetchDatas();
+        fetchDatasNew(true);
+      }
+    } catch (err) {
+      setLoading(false);
+      alert("Bir sorun oluştu, lütfen tekrar deneyiniz.");
+    }
+  };
+
+  const deleteHandlerNew = async () => {
+    setLoading(true);
+    try {
+      let parameters = {
+        luck_id: id,
+      };
+      const response = await axiosPrivate.post(
+        APIS.delete_new,
+        JSON.stringify(parameters),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        fetchDatasNew();
       }
     } catch (err) {
       setLoading(false);
@@ -305,83 +497,21 @@ const LucksScreen = () => {
   };
 
   return (
-    <PanelContainer>
+    <PanelContainer
+      /*
+      data={selectedNLuck === null ? data : dataOld}
+      values={selectedNLuck === null ? values : valuesOld}
+      */
+      data={data}
+      values={values}
+      page_id="şanslar"
+    >
       {loading ? (
         <Loading />
-      ) : settingsOpen ? (
-        <div className="discount_container">
-          <div>
-            <div className="filter_row">
-              <Button
-                fullWidth
-                onClick={() => setLuckType("1")}
-                color="primary"
-                variant={luckType === "1" ? "outlined" : "text"}
-              >
-                Kazı Kazan
-              </Button>
-              <Button
-                fullWidth
-                onClick={() => setLuckType("2")}
-                color="primary"
-                variant={luckType === "2" ? "outlined" : "text"}
-              >
-                Çark
-              </Button>
-              <Button
-                fullWidth
-                onClick={() => setLuckType("3")}
-                color="primary"
-                variant={luckType === "3" ? "outlined" : "text"}
-              >
-                Salla Kazan
-              </Button>
-            </div>
-            <p>Lütfen oyunanabilme sıklığı giriniz.</p>
-            <TextField
-              margin="none"
-              label={"Sıklık (Gün)"}
-              value={luckFrequency}
-              onChange={(e) => setLuckfrequency(e.target.value)}
-              type="number"
-              fullWidth
-              variant="standard"
-              multiline={false}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  margin="dense"
-                  checked={luckOpen}
-                  onChange={(e) => setLuckOpen(e.target.checked)}
-                  fullWidth
-                  variant="standard"
-                />
-              }
-              label={"Açık/Kapalı"}
-            />
-            {saveOpen && (
-              <Button
-                onClick={handleUpdate}
-                color="primary"
-                variant="contained"
-              >
-                Kaydet
-              </Button>
-            )}
-          </div>
-          <Button
-            onClick={() => setSettingOpen(false)}
-            color="primary"
-            variant="contained"
-          >
-            Bütün ödülleri gör
-          </Button>
-        </div>
-      ) : shown ? (
+      ) : newShown ? (
         <DiscountScreen
-          isLuck={true}
-          setShown={setShown}
+          isNewLuck={true}
+          setShown={setNewShown}
           branches={branches}
           branchId={branchId}
           setBranchId={setBranchId}
@@ -395,6 +525,8 @@ const LucksScreen = () => {
           setEmail={setEmail}
           minPayment={minPayment}
           setMinPayment={setMinPayment}
+          finalDate={finalDate}
+          setFinalDate={setFinalDate}
           code={code}
           setCode={setCode}
           usageAmount={usageAmount}
@@ -425,26 +557,113 @@ const LucksScreen = () => {
           setProductId={setProductId}
           onProductsSelected={getProducts}
           emptyLuck={emptyLuck}
+          luckType={luckType}
+          luckAmount={luckAmount}
+          setLuckAmount={setLuckAmount}
+          luckFrequency={luckFrequency}
+          setLuckfrequency={setLuckfrequency}
+          setLuckType={setLuckType}
+          setEmptyLuck={setEmptyLuck}
+          onDone={handleDoneNew}
+        />
+      ) : shown ? (
+        <DiscountScreen
+          isLuck={true}
+          setShown={setShown}
+          branches={branches}
+          branchId={branchId}
+          setBranchId={setBranchId}
+          dayId={dayId}
+          setDayId={setDayId}
+          startHour={startHour}
+          setStartHour={setStartHour}
+          endHour={endHour}
+          setEndHour={setEndHour}
+          email={email}
+          setEmail={setEmail}
+          personel={personel}
+          setPersonel={setPersonel}
+          student={student}
+          setStudent={setStudent}
+          minPayment={minPayment}
+          setMinPayment={setMinPayment}
+          code={code}
+          setCode={setCode}
+          usageAmount={usageAmount}
+          setUsageAmount={setUsageAmount}
+          usageFrequency={usageFrequency}
+          setUsageFrequency={setUsageFrequency}
+          index={discountIndexOld}
+          setIndex={setDiscountIndexOld}
+          name={name}
+          setName={setName}
+          description={description}
+          setDescription={setDescription}
+          chance={chance}
+          setChance={setChance}
+          discountType={discountType}
+          setDiscountType={setDiscountType}
+          minLimit={minLimit}
+          setMinLimit={setMinLimit}
+          percent={percent}
+          setPercent={setPercent}
+          amount={amount}
+          setAmount={setAmount}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          productsLoading={productsLoading}
+          products={products}
+          productId={productId}
+          setProductId={setProductId}
+          onProductsSelected={getProducts}
+          emptyLuck={emptyLuck}
           setEmptyLuck={setEmptyLuck}
           onDone={handleDone}
         />
-      ) : (
+      ) : selectedNLuck === null ? (
         <>
           <PageTitle
-            title={"Şanslar"}
+            title={"Şans Oyunları"}
             luck={true}
-            onLuckPress={() => setSettingOpen(true)}
             onPress={() => {
-              setShown(true);
-              setDiscountIndex(0);
+              setShown(false);
+              setNewShown(true);
             }}
           />
           <Table
             values={values}
             data={data}
             loading={false}
+            onDelete={() => deleteHandlerNew()}
+            setId={setId}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
+      ) : (
+        <>
+          <PageTitle
+            title={"Şanslar"}
+            luckOld={true}
+            onPress={() => {
+              setDiscountIndexOld(0);
+              setNewShown(false);
+              setShown(true);
+            }}
+            onBackPress={() => {
+              setShown(false);
+              setNewShown(false);
+              setSelectedNluck(null);
+            }}
+          />
+          <Table
+            values={valuesOld}
+            data={dataOld}
+            loading={false}
             onDelete={() => deleteHandler()}
             setId={setId}
+            currentPage={currentPageOld}
+            setCurrentPage={setCurrentPageOld}
           />
         </>
       )}

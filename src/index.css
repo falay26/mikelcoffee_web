@@ -134,12 +134,12 @@ body {
 .navbar_container {
   display: flex;
   height: var(--header_height);
-  width: auto;
+  width: "auto";
   padding: var(--default_pad);
   border-bottom: 2px solid var(--main);
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .sidebar_items_contaier {
   padding: 20px 0;
@@ -301,6 +301,9 @@ textarea[type="text"]:focus {
 }
 .selection_container img {
   margin-left: 8px;
+}
+.page-item-highlighted {
+  background-color: lightgray !important;
 }
 
 /* RESPONSIVE */

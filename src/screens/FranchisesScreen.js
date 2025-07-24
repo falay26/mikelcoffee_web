@@ -14,6 +14,7 @@ const FranchisesScreen = () => {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   //Filters
   const [filteredData, setFilteredData] = useState([]);
   const [experienceFilter, setExperienceFilter] = useState("");
@@ -32,11 +33,13 @@ const FranchisesScreen = () => {
       title: "Telefon",
       value: "phone",
       is_phone: true,
+      doe_type: "is_phone",
     },
     {
       title: "Tecrübe",
       value: "experience_id",
       is_experience: true,
+      doe_type: "is_experience",
       filter: {
         title: "Tecrübe",
         state: experienceFilter,
@@ -78,7 +81,6 @@ const FranchisesScreen = () => {
         );
         setLoading(false);
         if (response.status === 200) {
-          console.log(response.data.data);
           setData(response.data.data);
         }
       } catch (err) {
@@ -108,13 +110,19 @@ const FranchisesScreen = () => {
   }, [data, experienceFilter, expenseFilter]);
 
   return (
-    <PanelContainer>
+    <PanelContainer data={filteredData} values={values} page_id="başvurular">
       {loading ? (
         <Loading />
       ) : (
         <>
           <PageTitle title={"Başvurular"} total={filteredData.length} />
-          <Table values={values} data={filteredData} loading={false} />
+          <Table
+            values={values}
+            data={filteredData}
+            loading={false}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </>
       )}
     </PanelContainer>
