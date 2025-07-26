@@ -175,6 +175,9 @@ const SupportsScreen = () => {
       if (subjectFilter !== "") {
         new_data = new_data.filter((i) => i?.subject_id === subjectFilter);
       }
+      if (new_data.length / 10 < currentPage) {
+        setCurrentPage(1);
+      }
       setFilteredData(new_data);
     }
   }, [data, branchFilter, subjectFilter]);

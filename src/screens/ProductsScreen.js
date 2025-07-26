@@ -57,6 +57,7 @@ const ProductsScreen = () => {
   //Filters
   const [filteredData, setFilteredData] = useState([]);
   const [nameFilter, setNameFilter] = useState("");
+  const [mcFilter, setMcFilter] = useState("");
 
   useEffect(() => {
     fetchDatas();
@@ -639,6 +640,18 @@ const ProductsScreen = () => {
       type: "textinput",
       state: coin,
       setState: setCoin,
+      filter: {
+        title: "Kazandırma",
+        state: mcFilter,
+        setState: setMcFilter,
+        type: "choiceinput",
+        options: [
+          { _id: "", name: "Hepsi" },
+          { _id: "1", name: "Kazandırıyor" },
+          { _id: "2", name: "Kazandırmıyor" },
+        ],
+        option_title: "name",
+      },
     },
     {
       title: "Vegan",
@@ -684,19 +697,31 @@ const ProductsScreen = () => {
 
   //FilterEffect
   useEffect(() => {
-    if (nameFilter === "") {
+    if (nameFilter === "" && mcFilter === "") {
       setFilteredData(data);
     } else {
       let new_data = data;
       if (nameFilter !== "") {
         new_data = new_data.filter(
           (i) =>
-            i?.title?.tr?.toLowerCase().indexOf(nameFilter.toLowerCase()) > -1
+            i?.title?.tr?.toLowerCase().indexOf(nameFilter.toLowerCase()) >
+              -1 ||
+            i?.title?.en?.toLowerCase().indexOf(nameFilter.toLowerCase()) > -1
         );
+      }
+      if (mcFilter !== "") {
+        if (mcFilter === "1") {
+          new_data = new_data.filter((i) => i?.coin === "1");
+        } else {
+          new_data = new_data.filter((i) => i?.coin !== "1");
+        }
+      }
+      if (new_data.length / 10 < currentPage) {
+        setCurrentPage(1);
       }
       setFilteredData(new_data);
     }
-  }, [data, nameFilter]);
+  }, [data, nameFilter, mcFilter]);
 
   return (
     <PanelContainer data={filteredData} values={values} page_id="ürünler">

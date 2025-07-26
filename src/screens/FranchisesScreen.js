@@ -105,6 +105,9 @@ const FranchisesScreen = () => {
       if (expenseFilter !== "") {
         new_data = new_data.filter((i) => i.expense_id === expenseFilter);
       }
+      if (new_data.length / 10 < currentPage) {
+        setCurrentPage(1);
+      }
       setFilteredData(new_data);
     }
   }, [data, experienceFilter, expenseFilter]);

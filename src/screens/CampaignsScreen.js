@@ -443,6 +443,9 @@ const CampaignsScreen = () => {
           return newDate <= newDate0;
         });
       }
+      if (new_data.length / 10 < currentPage) {
+        setCurrentPage(1);
+      }
       setFilteredData(new_data);
     }
   }, [data, startFilter, endFilter]);

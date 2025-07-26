@@ -82,6 +82,9 @@ const OrdersScreen = () => {
       if (payFilter !== "") {
         new_data = new_data.filter((i) => i.paid_with === payFilter);
       }
+      if (new_data.length / 10 < currentPage) {
+        setCurrentPage(1);
+      }
       setFilteredData(new_data);
     }
   }, [data, branchFilter, ageFilter0, ageFilter1, payFilter]);
